@@ -20,14 +20,7 @@ CREATE TABLE Barrio_Coordenadas (
     FOREIGN KEY (vec2d_id) REFERENCES Vec2D(id)
 );
 
-CREATE TABLE Persona (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255),
-    apellido VARCHAR(255),
-    dni VARCHAR(50),
-    telefono VARCHAR(50)
-);
-
+-- Tabla de usuarios
 CREATE TABLE Usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
@@ -37,7 +30,16 @@ CREATE TABLE Usuario (
     is_verified_user BOOLEAN DEFAULT FALSE,
     matricula BIGINT
 );
-
+-- Tabla de personas
+CREATE TABLE Persona (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+    apellido VARCHAR(255),
+    dni VARCHAR(50),
+    telefono VARCHAR(50),
+    usuario_id INT,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id) ON DELETE CASCADE
+);
 CREATE TABLE Organizacion_Social (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(255),

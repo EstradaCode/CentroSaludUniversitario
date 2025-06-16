@@ -1,6 +1,10 @@
-package com.modelo;
+package Modelo;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class Filtro {
+    private Long id;
     private String valorSeleccionado;
     private String operacion;
     private Boolean isActive;

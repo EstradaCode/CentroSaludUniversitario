@@ -1,4 +1,4 @@
-package com.modelo;
+package Modelo;
 
 public class Vec2D {
     private double x;

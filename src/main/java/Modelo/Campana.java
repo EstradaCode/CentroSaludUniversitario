@@ -1,4 +1,4 @@
-package com.modelo;
+package Modelo;
 
 import java.io.File;
 import java.util.List;

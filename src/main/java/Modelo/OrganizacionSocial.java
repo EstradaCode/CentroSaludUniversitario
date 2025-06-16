@@ -1,6 +1,10 @@
-package com.modelo;
+package Modelo;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class OrganizacionSocial {
+    private Long id;
     private String nombre;
     private String domicilio;
     private Barrio barrio;

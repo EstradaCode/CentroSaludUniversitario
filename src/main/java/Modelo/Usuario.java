@@ -1,4 +1,6 @@
-package com.modelo;
+package Modelo;
+
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -7,15 +9,23 @@ enum Roles {
     SALUD,
     VISITANTE
 }
+@Entity
 public class Usuario extends Persona{
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false,unique = true) // el user no deberia repetirse
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false,unique = true)
     private String email;
     private Boolean isApprobed;
+    @Enumerated(EnumType.STRING)
     private Roles rol;
+    // no es necesario utilizar column si no quiero configurar algo especifico
     private Long matricula;
-    private List<Filtro> filtros;
+    private transient List<Filtro> filtros; // dato transitorio, no persiste.
     public Usuario() {
     }
     public Usuario(String nombre, String apellido, long dni, long telefono, String username, String password, String email, String rolEnString, Long matricula, List<Filtro> filtros) {
@@ -40,6 +50,7 @@ public class Usuario extends Persona{
                 throw new IllegalArgumentException("Rol no válido: " + rolEnString);
         }
     }
+
 
     public String getUsername() {
         return username;

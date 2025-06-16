@@ -1,4 +1,4 @@
-package com.modelo;
+package Modelo;
 
 public class Barrio {
     private String nombre;

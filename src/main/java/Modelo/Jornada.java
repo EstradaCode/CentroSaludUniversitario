@@ -1,8 +1,11 @@
-package com.modelo;
+package Modelo;
+
+import jakarta.persistence.Entity;
 
 import java.util.List;
-
+@Entity
 public class Jornada {
+    private Long id;
     private String horaInicio;
     private String horaFin;
     private String fecha;
