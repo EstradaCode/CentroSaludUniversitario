@@ -1,14 +1,17 @@
 package Modelo;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import java.util.List;
 @Entity
 public class Jornada {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String horaInicio;
     private String horaFin;
     private String fecha;
+    @OneToMany
     private List<Encuesta> encuestas;
 
     public Jornada() {
