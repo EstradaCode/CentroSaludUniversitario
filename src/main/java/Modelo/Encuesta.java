@@ -11,8 +11,7 @@ public class Encuesta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fechaCreacion;
-    private String latitud;
-    private String longitud;
+    private GeoPoint coordenadas;
 
         @ManyToOne
         private Encuestador encuestador;
@@ -25,10 +24,9 @@ public class Encuesta {
 
         public Encuesta() {}
 
-        public Encuesta( String fechaCreacion, String latitud, String longitud, Encuestador encuestador) {
+        public Encuesta( String fechaCreacion, GeoPoint coordenadas, Encuestador encuestador) {
             this.fechaCreacion = fechaCreacion;
-            this.latitud = latitud;
-            this.longitud = longitud;
+            this.coordenadas = coordenadas;
             this.encuestador = encuestador;
             this.respuestas = new HashMap<>();
         }

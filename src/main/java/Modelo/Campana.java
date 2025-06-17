@@ -11,7 +11,7 @@ public class Campana {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private String rutaArchivoEncuesta;
+    private String rutaArchivoEncuesta; // la idea es que el archivo esté subido en un servicio aparte, para consumirse de forma externa (google cloud, amazon s3, etc)
     @ManyToMany
     private List<Barrio> zona;
     private String fechaInicio;
