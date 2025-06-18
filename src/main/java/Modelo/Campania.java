@@ -2,11 +2,10 @@ package Modelo;
 
 import jakarta.persistence.*;
 
-import java.io.File;
 import java.util.List;
-import java.util.Map;
+
 @Entity
-public class Campana {
+public class Campania {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,9 +22,9 @@ public class Campana {
     @ManyToOne
     private OrganizacionSocial organizacionSocial;
 
-    public Campana() {
+    public Campania() {
     }
-    public Campana(String nombre, String archivoEncuesta, List<Barrio> zona, String fechaInicio, String fechaFin, List<Encuestador> encuestadores, OrganizacionSocial organizacionSocial) {
+    public Campania(String nombre, String archivoEncuesta, List<Barrio> zona, String fechaInicio, String fechaFin, List<Encuestador> encuestadores, OrganizacionSocial organizacionSocial) {
         this.nombre = nombre;
         this.rutaArchivoEncuesta = archivoEncuesta;
         this.zona = zona;

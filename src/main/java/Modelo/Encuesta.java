@@ -19,7 +19,7 @@ public class Encuesta {
         @ElementCollection
         @CollectionTable(name = "pregunta_respuesta", joinColumns = @JoinColumn(name = "encuesta_id"))
         @MapKeyJoinColumn(name = "pregunta_id")
-        @Column(name = "respuesta")
+        @Column(name = "respuesta") // esto genera una tabla intermedio que representa el mapa
         private Map<Pregunta, String> respuestas;
 
         public Encuesta() {}
@@ -31,6 +31,45 @@ public class Encuesta {
             this.respuestas = new HashMap<>();
         }
 
-        // Getters y setters...
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(String fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public GeoPoint getCoordenadas() {
+        return coordenadas;
+    }
+
+    public void setCoordenadas(GeoPoint coordenadas) {
+        this.coordenadas = coordenadas;
+    }
+
+    public Encuestador getEncuestador() {
+        return encuestador;
+    }
+
+    public void setEncuestador(Encuestador encuestador) {
+        this.encuestador = encuestador;
+    }
+
+    public Map<Pregunta, String> getRespuestas() {
+        return respuestas;
+    }
+
+    public void setRespuestas(Map<Pregunta, String> respuestas) {
+        this.respuestas = respuestas;
+    }
+// Getters y setters...
     }
 
