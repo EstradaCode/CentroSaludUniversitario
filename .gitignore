@@ -1,6 +1,6 @@
 target/
 .mvn
-
+.smarttomcat
 ### IntelliJ IDEA ###
 .idea
 *.iws
