@@ -1,9 +1,6 @@
 package Modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class OrganizacionSocial {
@@ -12,6 +9,8 @@ public class OrganizacionSocial {
     private Long id;
     private String nombre;
     private String domicilio;
+    @ManyToOne
+    @JoinColumn(name = "barrio_id")
     private Barrio barrio;
     private String actividadPrincipal;
 

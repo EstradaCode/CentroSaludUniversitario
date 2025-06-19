@@ -15,7 +15,8 @@ public class Encuesta {
 
         @ManyToOne
         private Encuestador encuestador;
-
+        @Embedded
+        private GeoPoint ubicacion;
         @ElementCollection
         @CollectionTable(name = "pregunta_respuesta", joinColumns = @JoinColumn(name = "encuesta_id"))
         @MapKeyJoinColumn(name = "pregunta_id")

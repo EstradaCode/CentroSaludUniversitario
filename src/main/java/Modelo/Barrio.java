@@ -1,9 +1,8 @@
 package Modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Barrio {
@@ -11,13 +10,15 @@ public class Barrio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private GeoPoint coordenadas;
+    @ElementCollection
+    @CollectionTable(name = "barrio_coordenadas", joinColumns = @JoinColumn(name = "barrio_id"))
+    private List<GeoPoint> coordenadas;
 
 
     public Barrio() {
     }
 
-    public Barrio(GeoPoint coordenadas, String nombre) {
+    public Barrio(List<GeoPoint> coordenadas, String nombre) {
         this.coordenadas = coordenadas;
         this.nombre = nombre;
     }
@@ -27,10 +28,10 @@ public class Barrio {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public GeoPoint getCoordenadas() {
+    public List<GeoPoint> getCoordenadas() {
         return coordenadas;
     }
-    public void setCoordenadas(GeoPoint coordenadas) {
+    public void setCoordenadas(List<GeoPoint> coordenadas) {
         this.coordenadas = coordenadas;
     }
 }

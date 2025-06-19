@@ -1,5 +1,9 @@
 package Modelo;
 
+
+import jakarta.persistence.*;
+
+@Embeddable
 public class GeoPoint {
 
     private double latitud;
