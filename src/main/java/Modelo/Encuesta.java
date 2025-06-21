@@ -1,8 +1,14 @@
 package Modelo;
 
+import Utils.Enums.NivelIngresos;
+import Utils.Enums.TipoCalefaccion;
+import Utils.Enums.TipoConexionElectrica;
+import Utils.Enums.TipoVivienda;
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -10,67 +16,39 @@ public class Encuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fechaCreacion;
+
+    @Embedded
     private GeoPoint coordenadas;
 
-        @ManyToOne
-        private Encuestador encuestador;
-        @Embedded
-        private GeoPoint ubicacion;
-        @ElementCollection
-        @CollectionTable(name = "pregunta_respuesta", joinColumns = @JoinColumn(name = "encuesta_id"))
-        @MapKeyJoinColumn(name = "pregunta_id")
-        @Column(name = "respuesta") // esto genera una tabla intermedio que representa el mapa
-        private Map<Pregunta, String> respuestas;
+    private Date fechaCreacion;
 
-        public Encuesta() {}
+    @Enumerated(EnumType.STRING)
+    private TipoVivienda tipoVivienda;
 
-        public Encuesta( String fechaCreacion, GeoPoint coordenadas, Encuestador encuestador) {
-            this.fechaCreacion = fechaCreacion;
-            this.coordenadas = coordenadas;
-            this.encuestador = encuestador;
-            this.respuestas = new HashMap<>();
-        }
+    private Boolean accesoAgua;
 
-    public Long getId() {
-        return id;
-    }
+    private Boolean aguaPotable;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Enumerated(EnumType.STRING)
+    private TipoConexionElectrica conexionElectrica;
 
-    public String getFechaCreacion() {
-        return fechaCreacion;
-    }
+    @ElementCollection(targetClass = TipoCalefaccion.class)
+    @Enumerated(EnumType.STRING)
+    private List<TipoCalefaccion> calefaccion;
 
-    public void setFechaCreacion(String fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
+    private Integer cantidadHabitaciones;
 
-    public GeoPoint getCoordenadas() {
-        return coordenadas;
-    }
+    private Boolean asistenciaAlimentaria;
 
-    public void setCoordenadas(GeoPoint coordenadas) {
-        this.coordenadas = coordenadas;
-    }
+    @Enumerated(EnumType.STRING)
+    private NivelIngresos ingresos;
 
-    public Encuestador getEncuestador() {
-        return encuestador;
-    }
+    private Boolean accesoSalud;
 
-    public void setEncuestador(Encuestador encuestador) {
-        this.encuestador = encuestador;
-    }
+    @OneToMany(mappedBy = "encuesta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EncuestaPersona> personas;
 
-    public Map<Pregunta, String> getRespuestas() {
-        return respuestas;
-    }
+    private String uuidApi;
 
-    public void setRespuestas(Map<Pregunta, String> respuestas) {
-        this.respuestas = respuestas;
-    }
-// Getters y setters...
-    }
+}
 
