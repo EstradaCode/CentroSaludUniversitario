@@ -7,9 +7,9 @@ import Utils.Enums.TipoVivienda;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 @Entity
 public class Encuesta {

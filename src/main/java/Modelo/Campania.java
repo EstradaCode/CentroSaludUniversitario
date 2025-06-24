@@ -2,6 +2,8 @@ package Modelo;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -13,8 +15,8 @@ public class Campania {
     private String rutaArchivoEncuesta; // la idea es que el archivo esté subido en un servicio aparte, para consumirse de forma externa (google cloud, amazon s3, etc)
     @ManyToMany
     private List<Barrio> zona;
-    private String fechaInicio;
-    private String fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     @OneToMany
     private List<Encuestador>  encuestadores;
     @OneToMany
@@ -24,7 +26,7 @@ public class Campania {
 
     public Campania() {
     }
-    public Campania(String nombre, String archivoEncuesta, List<Barrio> zona, String fechaInicio, String fechaFin, List<Encuestador> encuestadores, OrganizacionSocial organizacionSocial) {
+    public Campania(String nombre, String archivoEncuesta, List<Barrio> zona, LocalDate fechaInicio, LocalDate fechaFin, List<Encuestador> encuestadores, OrganizacionSocial organizacionSocial) {
         this.nombre = nombre;
         this.rutaArchivoEncuesta = archivoEncuesta;
         this.zona = zona;
@@ -51,16 +53,16 @@ public class Campania {
     public void setZona(List<Barrio> zona) {
         this.zona = zona;
     }
-    public String getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
-    public void setFechaInicio(String fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
-    public String getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
-    public void setFechaFin(String fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
     public List<Encuestador> getEncuestadores() {
@@ -76,4 +78,27 @@ public class Campania {
         this.organizacionSocial = organizacionSocial;
     }
 
+    public List<Jornada> getJornadas() {
+        return jornadas;
+    }
+
+    public void setJornadas(List<Jornada> jornadas) {
+        this.jornadas = jornadas;
+    }
+
+    public String getRutaArchivoEncuesta() {
+        return rutaArchivoEncuesta;
+    }
+
+    public void setRutaArchivoEncuesta(String rutaArchivoEncuesta) {
+        this.rutaArchivoEncuesta = rutaArchivoEncuesta;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

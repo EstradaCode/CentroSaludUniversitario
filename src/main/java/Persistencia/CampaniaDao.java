@@ -2,6 +2,7 @@ package Persistencia;
 
 import Modelo.Campania;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CampaniaDao extends GenericDao<Campania> /* extends GenericDao<Campania> si querés */ {
@@ -9,7 +10,7 @@ public interface CampaniaDao extends GenericDao<Campania> /* extends GenericDao<
     /**
      * Find campaigns active within a date range (e.g. campaigns currently ongoing).
      */
-    List<Campania> findActiveCampaigns(String date);
+    List<Campania> findActiveCampaigns(LocalDate date);
 
     /**
      * Find campaigns by partial name match (LIKE).

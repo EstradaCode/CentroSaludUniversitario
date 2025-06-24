@@ -4,40 +4,39 @@ package Persistencia;
 import Modelo.Encuesta;
 import java.util.List;
 
+import java.util.Date;
+
 public interface EncuestaDao extends GenericDao<Encuesta> {
 
     /**
      * Buscar encuestas por fecha de creación exacta.
      */
-    List<Encuesta> findByFechaCreacion(String fecha);
+    List<Encuesta> findByFechaCreacion(Date fecha);
 
     /**
-     * Buscar encuestas por id de encuestador.
+     * Buscar encuestas por UUID externo (identificador API).
      */
-    List<Encuesta> findByEncuestador(Long idEncuestador);
+    List<Encuesta> findByUuidApi(String uuidApi);
 
     /**
-     * Buscar encuestas que contengan una respuesta específica a una pregunta dada.
-     *
-     * @param idPregunta id de la pregunta
-     * @param respuesta valor de la respuesta a buscar
-     * @return lista de encuestas que tengan esa respuesta para esa pregunta
+     * Buscar encuestas por tipo de vivienda.
      */
-    List<Encuesta> findByRespuesta(Long idPregunta, String respuesta);
+    List<Encuesta> findByTipoVivienda(String tipoVivienda);
 
     /**
-     * Buscar encuestas que contengan respuestas para una pregunta específica, sin importar la respuesta.
-     *
-     * @param idPregunta id de la pregunta
-     * @return lista de encuestas que tengan una respuesta a esa pregunta
+     * Contar encuestas según acceso a agua.
      */
-    List<Encuesta> findByPregunta(Long idPregunta);
+    Long countByAccesoAgua(Boolean accesoAgua);
 
     /**
-     * Contar la cantidad total de respuestas para una pregunta específica (útil para estadísticas).
-     *
-     * @param idPregunta id de la pregunta
-     * @return cantidad total de respuestas registradas para esa pregunta
+     * Contar encuestas según disponibilidad de agua potable.
      */
-    Long countRespuestasByPregunta(Long idPregunta);
+    Long countByAguaPotable(Boolean aguaPotable);
+
+    /**
+     * Contar encuestas según acceso a salud.
+     */
+    Long countByAccesoSalud(Boolean accesoSalud);
+
+    // Si necesitás, podés agregar más métodos específicos según tus filtros y consultas.
 }

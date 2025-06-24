@@ -3,7 +3,7 @@ package Modelo;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED) // la idea es que cuando traigo mi info de usuario, hace el join con la tabla Persona, relacion 1 a 1
 public class Persona {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

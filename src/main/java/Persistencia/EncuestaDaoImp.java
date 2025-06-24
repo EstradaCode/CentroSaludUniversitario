@@ -3,6 +3,11 @@ package Persistencia;
 import Modelo.Encuesta;
 import jakarta.persistence.EntityManager;
 
+import Modelo.Encuesta;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+
+import java.util.Date;
 import java.util.List;
 
 public class EncuestaDaoImp implements EncuestaDao {
@@ -52,44 +57,53 @@ public class EncuestaDaoImp implements EncuestaDao {
         }
     }
 
+    // Nuevos métodos adaptados
+
     @Override
-    public List<Encuesta> findByFechaCreacion(String fecha) {
-        String jpql = "SELECT e FROM Encuesta e WHERE e.fechaCreacion = :fecha";
-        return em.createQuery(jpql, Encuesta.class)
-                .setParameter("fecha", fecha)
-                .getResultList();
+    public List<Encuesta> findByFechaCreacion(Date fecha) {
+        String jpql = "SELECT e FROM Encuesta e WHERE DATE(e.fechaCreacion) = DATE(:fecha)";
+        TypedQuery<Encuesta> query = em.createQuery(jpql, Encuesta.class);
+        query.setParameter("fecha", fecha);
+        return query.getResultList();
     }
 
     @Override
-    public List<Encuesta> findByEncuestador(Long idEncuestador) {
-        String jpql = "SELECT e FROM Encuesta e WHERE e.encuestador.id = :idEnc";
-        return em.createQuery(jpql, Encuesta.class)
-                .setParameter("idEnc", idEncuestador)
-                .getResultList();
+    public List<Encuesta> findByUuidApi(String uuidApi) {
+        String jpql = "SELECT e FROM Encuesta e WHERE e.uuidApi = :uuidApi";
+        TypedQuery<Encuesta> query = em.createQuery(jpql, Encuesta.class);
+        query.setParameter("uuidApi", uuidApi);
+        return query.getResultList();
     }
 
     @Override
-    public List<Encuesta> findByRespuesta(Long idPregunta, String respuesta) {
-        String jpql = "SELECT e FROM Encuesta e JOIN e.respuestas r WHERE KEY(r).id = :idPregunta AND r = :respuesta";
-        return em.createQuery(jpql, Encuesta.class)
-                .setParameter("idPregunta", idPregunta)
-                .setParameter("respuesta", respuesta)
-                .getResultList();
+    public List<Encuesta> findByTipoVivienda(String tipoVivienda) {
+        String jpql = "SELECT e FROM Encuesta e WHERE e.tipoVivienda = :tipoVivienda";
+        TypedQuery<Encuesta> query = em.createQuery(jpql, Encuesta.class);
+        query.setParameter("tipoVivienda", tipoVivienda);
+        return query.getResultList();
     }
 
     @Override
-    public List<Encuesta> findByPregunta(Long idPregunta) {
-        String jpql = "SELECT e FROM Encuesta e JOIN e.respuestas r WHERE KEY(r).id = :idPregunta";
-        return em.createQuery(jpql, Encuesta.class)
-                .setParameter("idPregunta", idPregunta)
-                .getResultList();
+    public Long countByAccesoAgua(Boolean accesoAgua) {
+        String jpql = "SELECT COUNT(e) FROM Encuesta e WHERE e.accesoAgua = :accesoAgua";
+        TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+        query.setParameter("accesoAgua", accesoAgua);
+        return query.getSingleResult();
     }
 
     @Override
-    public Long countRespuestasByPregunta(Long idPregunta) {
-        String jpql = "SELECT COUNT(r) FROM Encuesta e JOIN e.respuestas r WHERE KEY(r).id = :idPregunta";
-        return em.createQuery(jpql, Long.class)
-                .setParameter("idPregunta", idPregunta)
-                .getSingleResult();
+    public Long countByAguaPotable(Boolean aguaPotable) {
+        String jpql = "SELECT COUNT(e) FROM Encuesta e WHERE e.aguaPotable = :aguaPotable";
+        TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+        query.setParameter("aguaPotable", aguaPotable);
+        return query.getSingleResult();
+    }
+
+    @Override
+    public Long countByAccesoSalud(Boolean accesoSalud) {
+        String jpql = "SELECT COUNT(e) FROM Encuesta e WHERE e.accesoSalud = :accesoSalud";
+        TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+        query.setParameter("accesoSalud", accesoSalud);
+        return query.getSingleResult();
     }
 }

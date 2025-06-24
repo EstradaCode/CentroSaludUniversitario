@@ -7,7 +7,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class BarrioDaoImpl implements BarrioDao{
+public class  BarrioDaoImpl implements BarrioDao{
     // Implementación de los métodos de BarrioDao
     private EntityManager em;
     public BarrioDaoImpl(EntityManager em) {

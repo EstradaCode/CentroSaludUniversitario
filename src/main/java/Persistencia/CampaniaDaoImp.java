@@ -3,7 +3,7 @@ package Persistencia;
 import Modelo.Campania;
 
 
-
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -61,7 +61,7 @@ public class CampaniaDaoImp implements CampaniaDao {
     }
 
     @Override
-    public List<Campania> findActiveCampaigns(String date) {
+    public List<Campania> findActiveCampaigns(LocalDate date) {
         String jpql = "SELECT c FROM Campania c WHERE :date BETWEEN c.fechaInicio AND c.fechaFin";
         TypedQuery<Campania> query = em.createQuery(jpql, Campania.class);
         query.setParameter("date", date);
@@ -104,5 +104,6 @@ public class CampaniaDaoImp implements CampaniaDao {
         String jpql = "SELECT COUNT(c) FROM Campania c";
         return em.createQuery(jpql, Long.class).getSingleResult();
     }
+
 }
 
