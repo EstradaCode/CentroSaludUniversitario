@@ -19,7 +19,7 @@ public class Campania {
     private LocalDate fechaFin;
     @OneToMany
     private List<Encuestador>  encuestadores;
-    @OneToMany
+    @OneToMany(mappedBy = "campania", cascade = CascadeType.ALL)
     private List<Jornada> jornadas;
     @ManyToOne
     private OrganizacionSocial organizacionSocial;
@@ -40,12 +40,6 @@ public class Campania {
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-    public String getArchivoEncuesta() {
-        return rutaArchivoEncuesta;
-    }
-    public void setArchivoEncuesta(String archivoEncuesta) {
-        this.rutaArchivoEncuesta = archivoEncuesta;
     }
     public List<Barrio> getZona() {
         return zona;

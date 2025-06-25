@@ -28,7 +28,7 @@ public class Usuario extends Persona{
     private transient List<Filtro> filtros; // dato transitorio, no persiste.
     public Usuario() {
     }
-    public Usuario(String nombre, String apellido, long dni, long telefono, String username, String password, String email, String rolEnString, Long matricula, List<Filtro> filtros) {
+    public Usuario(String nombre, String apellido, long dni, long telefono, String username, String password, String email, String rolEnString, Long matricula) {
         super(nombre, apellido, dni, telefono);
         this.username = username;
         this.password = password;
@@ -102,4 +102,17 @@ public class Usuario extends Persona{
         this.filtros = filtros;
     }
 
+    public Boolean getApprobed() {
+        return isApprobed;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -3,6 +3,7 @@
     <persistence-unit name="UNLP_PU" transaction-type="RESOURCE_LOCAL">
        <!-- <class>ar.edu.unlp.salud.algo</class> A reemplazar por tus clases -->
         <class>Modelo.Persona</class>
+        <class>Modelo.Usuario</class>
         <!--debo colocar la clase de cada una de las entidades para que manejen esta configuración de persistencia-->
         <properties>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/csu_app" />
