@@ -2,9 +2,6 @@ package Persistencia;
 
 import Modelo.Encuesta;
 import jakarta.persistence.EntityManager;
-
-import Modelo.Encuesta;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.Date;
