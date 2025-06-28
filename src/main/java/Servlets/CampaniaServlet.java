@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet("/campanias")
+//@WebServlet("/campanias")
 public class CampaniaServlet extends HttpServlet {
     private CampaniaService campaniaService;
 
@@ -37,7 +37,7 @@ public class CampaniaServlet extends HttpServlet {
         campania.setFechaInicio(fechaInicio);
         campania.setFechaFin(fechaFin);
 
-        // Para simplificar, dejamos zonas, encuestadores y org. social vacíos o nulos.
+        // Para simplificar, dejamos zonas, encuestadores y org. social vacíos de momento.
         campaniaService.crearCampania(campania);
         resp.getWriter().write("Campaña creada con ID: " + campania.getId());
     }

@@ -73,4 +73,13 @@ public class UsuarioDaoImpl implements UsuarioDao {
             return null;
         }
     }
+    public Usuario findByDni(Long dni) {
+        try {
+            return em.createQuery("SELECT u FROM Usuario u WHERE u.dni = :dni", Usuario.class)
+                    .setParameter("dni", dni)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

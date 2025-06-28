@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 
-@WebServlet("/encuestas")
+//@WebServlet("/encuestas")
 public class EncuestaServlet extends HttpServlet {
 
     private EncuestaService encuestaService;

@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/usuario")
+//@WebServlet("/usuario")
 public class UsuarioServlet extends HttpServlet {
     private UsuarioService usuarioService;
 
@@ -44,10 +44,8 @@ public class UsuarioServlet extends HttpServlet {
                 break;
         }
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        // Obtener parámetros del request
         String nombre = req.getParameter("nombre");
         String apellido = req.getParameter("apellido");
         String dniStr = req.getParameter("dni");
@@ -58,28 +56,45 @@ public class UsuarioServlet extends HttpServlet {
         String rol = req.getParameter("rol");
         String matriculaStr = req.getParameter("matricula");
 
-        // Validar y convertir parámetros numéricos
+        if (nombre == null || nombre.trim().isEmpty() ||
+                apellido == null || apellido.trim().isEmpty() ||
+                username == null || username.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().println("Error: faltan datos obligatorios");
+            return;
+        }
+
         Long dni = null;
         Long telefono = null;
         Long matricula = null;
 
         try {
-            dni = Long.parseLong(dniStr);
-            telefono = Long.parseLong(telefonoStr);
-            matricula = Long.parseLong(matriculaStr);
+            dni = (dniStr == null || dniStr.trim().isEmpty()) ? null : Long.parseLong(dniStr);
+            telefono = (telefonoStr == null || telefonoStr.trim().isEmpty()) ? null : Long.parseLong(telefonoStr);
+            matricula = (matriculaStr == null || matriculaStr.trim().isEmpty()) ? null : Long.parseLong(matriculaStr);
         } catch (NumberFormatException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().println("Error: parámetros numéricos inválidos");
             return;
         }
 
-        // Crear el nuevo usuario con los parámetros recibidos
-        Usuario nuevo = new Usuario(nombre, apellido, dni, telefono, username, password, email, rol, matricula);
+        // Validar si ya existe username o dni
+        if (usuarioService.buscarPorUsername(username)!= null) {
+            resp.setStatus(HttpServletResponse.SC_CONFLICT);
+            resp.getWriter().println("Error: el nombre de usuario ya está en uso");
+            return;
+        }
+        if (dni != null && usuarioService.buscarPorDni(dni)!=null) {
+            resp.setStatus(HttpServletResponse.SC_CONFLICT);
+            resp.getWriter().println("Error: el DNI ya está registrado");
+            return;
+        }
 
-        // Llamar al servicio para guardar el usuario
+        Usuario nuevo = new Usuario(nombre.trim(), apellido.trim(), dni, telefono, username.trim(), password, email, rol, matricula);
+
         usuarioService.crearUsuario(nuevo);
 
-        // Responder con confirmación
         resp.setContentType("text/plain");
         resp.getWriter().println("Usuario creado con ID: " + nuevo.getId());
     }

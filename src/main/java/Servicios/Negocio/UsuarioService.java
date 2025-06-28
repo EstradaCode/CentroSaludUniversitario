@@ -41,5 +41,8 @@ public class UsuarioService {
     public Usuario buscarPorEmail(String email) {
         return usuarioDao.findByEmail(email);
     }
+    public Usuario buscarPorDni(Long dni) {
+        return usuarioDao.findByDni(dni);
+    }
 }
 

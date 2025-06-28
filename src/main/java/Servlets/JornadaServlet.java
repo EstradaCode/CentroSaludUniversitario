@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet("/jornadas")
+//@WebServlet("/jornadas")
 public class JornadaServlet extends HttpServlet {
 
     private JornadaService jornadaService;
