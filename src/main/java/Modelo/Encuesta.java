@@ -4,6 +4,7 @@ import Utils.Enums.NivelIngresos;
 import Utils.Enums.TipoCalefaccion;
 import Utils.Enums.TipoConexionElectrica;
 import Utils.Enums.TipoVivienda;
+import com.opencsv.bean.CsvBindByName;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -51,8 +52,8 @@ public class Encuesta {
 
     @ManyToOne
     private Jornada jornada;
-
-    private String uuidApi;
+    @CsvBindByName(column = "ec5_uuid")
+    private transient String uuidApi;
 
     public Encuesta() {}
 
