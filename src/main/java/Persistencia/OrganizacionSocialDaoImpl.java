@@ -7,38 +7,44 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class OrganizacionSocialDaoImpl implements OrganizacionSocialDao{
-    // Implementación de los métodos de la interfaz OrganizacionSocialDao
-    // Aquí se pueden usar JPA, Hibernate o cualquier otra tecnología de persistencia
+public class OrganizacionSocialDaoImpl implements OrganizacionSocialDao {
+
     private final EntityManager em;
+
     public OrganizacionSocialDaoImpl(EntityManager em) {
         this.em = em;
     }
 
-
     @Override
     public void save(OrganizacionSocial entity) {
-        // Lógica para guardar una organización social
+        em.getTransaction().begin();
+        em.persist(entity);
+        em.getTransaction().commit();
     }
 
     @Override
     public OrganizacionSocial findById(Long id) {
-        // Lógica para encontrar una organización social por ID
-        return null; // Reemplazar con la implementación real
+        return em.find(OrganizacionSocial.class, id);
     }
+
+    @Override
     public List<OrganizacionSocial> findByBarrioId(Long barrioId) {
         String jpql = "SELECT o FROM OrganizacionSocial o WHERE o.barrio.id = :barrioId";
         TypedQuery<OrganizacionSocial> query = em.createQuery(jpql, OrganizacionSocial.class);
         query.setParameter("barrioId", barrioId);
         return query.getResultList();
     }
-    public List<OrganizacionSocial> findByName(String partialName){
+
+    @Override
+    public List<OrganizacionSocial> findByName(String partialName) {
         String jpql = "SELECT o FROM OrganizacionSocial o WHERE LOWER(o.nombre) LIKE LOWER(CONCAT('%', :name, '%'))";
         TypedQuery<OrganizacionSocial> query = em.createQuery(jpql, OrganizacionSocial.class);
         query.setParameter("name", partialName);
         return query.getResultList();
     }
-    public List<OrganizacionSocial> findByAddress(String address){
+
+    @Override
+    public List<OrganizacionSocial> findByAddress(String address) {
         String jpql = "SELECT o FROM OrganizacionSocial o WHERE LOWER(o.domicilio) LIKE LOWER(CONCAT('%', :address, '%'))";
         TypedQuery<OrganizacionSocial> query = em.createQuery(jpql, OrganizacionSocial.class);
         query.setParameter("address", address);
@@ -47,24 +53,33 @@ public class OrganizacionSocialDaoImpl implements OrganizacionSocialDao{
 
     @Override
     public List<OrganizacionSocial> findAll() {
-        // Lógica para encontrar todas las organizaciones sociales
-        return null; // Reemplazar con la implementación real
+        String jpql = "SELECT o FROM OrganizacionSocial o";
+        TypedQuery<OrganizacionSocial> query = em.createQuery(jpql, OrganizacionSocial.class);
+        return query.getResultList();
     }
 
     @Override
     public void update(OrganizacionSocial entity) {
-        // Lógica para actualizar una organización social
+        em.getTransaction().begin();
+        em.merge(entity);
+        em.getTransaction().commit();
     }
 
     @Override
     public void delete(OrganizacionSocial entity) {
-        // Lógica para eliminar una organización social por entidad
+        em.getTransaction().begin();
+        em.remove(em.contains(entity) ? entity : em.merge(entity));
+        em.getTransaction().commit();
     }
 
     @Override
     public void deleteById(Long id) {
-        // Lógica para eliminar una organización social por ID
+        OrganizacionSocial entity = em.find(OrganizacionSocial.class, id);
+        if (entity != null) {
+            delete(entity);
+        }
     }
+
     @Override
     public Long countOrganizations() {
         String jpql = "SELECT COUNT(o) FROM OrganizacionSocial o";
@@ -72,3 +87,4 @@ public class OrganizacionSocialDaoImpl implements OrganizacionSocialDao{
         return query.getSingleResult();
     }
 }
+
