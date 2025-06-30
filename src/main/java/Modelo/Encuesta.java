@@ -1,16 +1,15 @@
 package Modelo;
 
-import Utils.Enums.NivelIngresos;
-import Utils.Enums.TipoCalefaccion;
-import Utils.Enums.TipoConexionElectrica;
-import Utils.Enums.TipoVivienda;
+import Utils.Enums.*;
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByNames;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -44,9 +43,15 @@ public class Encuesta {
 
     @Enumerated(EnumType.STRING)
     private NivelIngresos ingresos;
+    @ElementCollection(targetClass = AtencionSalud.class)
+    @Enumerated(EnumType.STRING)
+    private Set<AtencionSalud> atencionSalud;
+    @ElementCollection(targetClass = MetodoAnticonceptivo.class)
+    @Enumerated(EnumType.STRING)
+    private Set<MetodoAnticonceptivo> anticonceptivos;
 
-    private Boolean accesoSalud;
-
+    @Enumerated(EnumType.STRING)
+    private AccesoMedicacion accesoMedicacion;
     @OneToMany(mappedBy = "encuesta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EncuestaPersona> personas = new ArrayList<>();
 
@@ -60,7 +65,7 @@ public class Encuesta {
     public Encuesta(GeoPoint coordenadas, Date fechaCreacion, TipoVivienda tipoVivienda,
                     Boolean accesoAgua, Boolean aguaPotable, TipoConexionElectrica conexionElectrica,
                     List<TipoCalefaccion> calefaccion, Integer cantidadHabitaciones,
-                    Boolean asistenciaAlimentaria, NivelIngresos ingresos, Boolean accesoSalud,
+                    Boolean asistenciaAlimentaria, NivelIngresos ingresos, Set<AtencionSalud> atencionSalud,
                     List<EncuestaPersona> personas, Jornada jornada, String uuidApi) {
         this.coordenadas = coordenadas;
         this.fechaCreacion = fechaCreacion;
@@ -72,7 +77,7 @@ public class Encuesta {
         this.cantidadHabitaciones = cantidadHabitaciones;
         this.asistenciaAlimentaria = asistenciaAlimentaria;
         this.ingresos = ingresos;
-        this.accesoSalud = accesoSalud;
+        this.atencionSalud = atencionSalud;
         this.personas = personas != null ? personas : new ArrayList<>();
         this.jornada = jornada;
         this.uuidApi = uuidApi;
@@ -161,12 +166,12 @@ public class Encuesta {
         this.ingresos = ingresos;
     }
 
-    public Boolean getAccesoSalud() {
-        return accesoSalud;
+    public Set<AtencionSalud> getAtencionSalud() {
+        return atencionSalud;
     }
 
-    public void setAccesoSalud(Boolean accesoSalud) {
-        this.accesoSalud = accesoSalud;
+    public void setAtencionSalud(Set<AtencionSalud> atencionSalud) {
+        this.atencionSalud = atencionSalud;
     }
 
     public List<EncuestaPersona> getPersonas() {
