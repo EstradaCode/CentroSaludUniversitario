@@ -20,6 +20,9 @@ public enum AtencionSalud {
     }
 
     public static AtencionSalud fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return NO_SABE;
+        }
         for (AtencionSalud lugar : AtencionSalud.values()) {
             if (lugar.descripcion.equalsIgnoreCase(value.trim())) {
                 return lugar;

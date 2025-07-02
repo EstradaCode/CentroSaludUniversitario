@@ -9,6 +9,10 @@ import java.util.Date;
 public interface EncuestaDao extends GenericDao<Encuesta> {
 
     /**
+     * Guardar todas las encuestas.
+     */
+    void saveAll(List<Encuesta> encuestas);
+    /**
      * Buscar encuestas por fecha de creación exacta.
      */
     List<Encuesta> findByFechaCreacion(Date fecha);

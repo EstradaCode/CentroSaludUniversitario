@@ -21,7 +21,14 @@ public class EncuestaDaoImp implements EncuestaDao {
         em.persist(entity);
         em.getTransaction().commit();
     }
-
+    @Override
+    public void saveAll(List<Encuesta> entities) {
+        em.getTransaction().begin();
+        for (Encuesta entity : entities) {
+            em.persist(entity);
+        }
+        em.getTransaction().commit();
+    }
     @Override
     public Encuesta findById(Long id) {
         return em.find(Encuesta.class, id);

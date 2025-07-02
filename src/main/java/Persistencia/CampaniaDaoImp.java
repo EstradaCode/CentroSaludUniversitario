@@ -28,6 +28,7 @@ public class CampaniaDaoImp implements CampaniaDao {
         em.getTransaction().commit();
     }
 
+
     @Override
     public Campania findById(Long id) {
         return em.find(Campania.class, id);

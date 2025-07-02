@@ -28,6 +28,9 @@ public enum TipoEmpleo {
         }
 
         public static TipoEmpleo fromString(String value) {
+            if (value == null || value.trim().isEmpty()) {
+                return NO_SABE;
+            }
             for (TipoEmpleo rama : TipoEmpleo.values()) {
                 if (rama.descripcion.equalsIgnoreCase(value.trim())) {
                     return rama;

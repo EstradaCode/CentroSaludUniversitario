@@ -21,6 +21,11 @@ public class EncuestaService {
         encuestaDao.save(encuesta);
     }
 
+    //Crear nuevas encuestas
+    public void crearEncuestas(List<Encuesta> encuestas) {
+        encuestaDao.saveAll(encuestas);
+    }
+
     // Buscar encuesta por ID
     public Encuesta obtenerEncuestaPorId(Long id) {
         return encuestaDao.findById(id);

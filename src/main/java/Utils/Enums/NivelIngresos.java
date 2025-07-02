@@ -17,6 +17,10 @@ public enum NivelIngresos {
     }
 
     public static NivelIngresos fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return NO_SABE;
+        }
+
         for (NivelIngresos percepcion : NivelIngresos.values()) {
             if (percepcion.descripcion.equalsIgnoreCase(value.trim())) {
                 return percepcion;

@@ -23,6 +23,9 @@ public enum MetodoAnticonceptivo {
     }
 
     public static MetodoAnticonceptivo fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return NO_SABE;
+        }
         for (MetodoAnticonceptivo metodo : MetodoAnticonceptivo.values()) {
             if (metodo.descripcion.equalsIgnoreCase(value.trim())) {
                 return metodo;

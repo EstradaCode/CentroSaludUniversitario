@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+// El transformer devuelve un mapa con la clave de ownerUuid y el valor una lista de EncuestaPersona asociada a ese UUID.
 public class TransformerEncuestaPersonas implements Transformer<List<EncuestaPersona>,Map<String,List<EncuestaPersona>>>{
 
     @Override
     public Map<String,List<EncuestaPersona>> transform(List<EncuestaPersona> input) {
+
         Map<String, List<EncuestaPersona>> map = new HashMap<String, List<EncuestaPersona>>();
+
         for(EncuestaPersona encuesta : input) {
             String id = encuesta.getOwnerUuid(); // Asegurarse de que el UUID esté presente
             if (id != null) {

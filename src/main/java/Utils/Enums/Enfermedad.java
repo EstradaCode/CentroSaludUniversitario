@@ -30,6 +30,9 @@ public enum Enfermedad {
     }
 
     public static Enfermedad fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return NO_SABE;
+        }
         for (Enfermedad enfermedad : Enfermedad.values()) {
             if (enfermedad.descripcion.equalsIgnoreCase(value.trim())) {
                 return enfermedad;

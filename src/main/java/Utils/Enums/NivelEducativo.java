@@ -1,7 +1,7 @@
 package Utils.Enums;
 
 public enum NivelEducativo {
-    JARDIN_INICIAL("Jardín inicial (4 a 5 años)"),
+    JARDIN_INICIAL("Jardin inicial (4 a 5 años)"),
     PRIMARIO_EN_CURSO("primario en curso"),
     PRIMARIO_COMPLETO("primario completo"),
     PRIMARIO_INCOMPLETO("primario incompleto"),
@@ -13,7 +13,7 @@ public enum NivelEducativo {
     TERCIARIO_UNIVERSITARIO_INCOMPLETO("terciario-universitario incompleto"),
     OFICIO("oficio"),
     NO_CONSIGUE_VACANTE("no consigue vacante"),
-    NUNCA_ASISTIO("nunca asistió a una institución educativa"),
+    NUNCA_ASISTIO("nunca asistio a una institución educativa"),
     NO_CORRESPONDE("no corresponde (menores de 4 años)");
 
     private final String descripcion;
@@ -26,16 +26,17 @@ public enum NivelEducativo {
         return descripcion;
     }
 
-    public static NivelEducativo fromString(String value) {
-        for (NivelEducativo nivel : NivelEducativo.values()) {
-            if (nivel.descripcion.equalsIgnoreCase(value.trim())) {
+    public static NivelEducativo fromDescripcion(String descripcion) {
+        for (NivelEducativo nivel : values()) {
+            if (nivel.getDescripcion().equalsIgnoreCase(descripcion.trim())) {
                 return nivel;
             }
         }
-        throw new IllegalArgumentException("Valor no reconocido: " + value);
+        throw new IllegalArgumentException("Valor no reconocido: " + descripcion);
     }
 
-    // Agrupamiento útil para análisis
+
+// Agrupamiento útil para análisis
     public String getGrupo() {
         return switch (this) {
             case JARDIN_INICIAL -> "Inicial";

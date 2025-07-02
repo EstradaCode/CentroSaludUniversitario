@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Modelo.EncuestaPersona;
-import com.opencsv.CSVReader;
+import Utils.ETL.ExtractorEncuesta;
+import Utils.ETL.LoaderEncuesta;
+import Utils.ETL.TransformerEncuesta;
 /*
  * No se recorrieron los archivos de forma condicional con corte de control. Porque el orden de los archivos puede variar.
  */
@@ -19,20 +21,10 @@ public class CSVReader {
      * @param secondaryCSV Ruta del archivo CSV de las encuestas por persona.
      * @return Lista de Encuestas leídas del archivo CSV.
      */
-    public static List<Encuesta> runCSVReader(String mainCSV, String secondaryCSV) {
-        // Primero leer el archivo de encuestas por persona
-        // Agregar el uuid a un set para evitar duplicados
-        // Despues obtener todas las encuestas de la misma vivienda
-        // Buscar por el uuid la encuesta principal. Y agregar las personas a la encuesta
+    public static void runCSVReader(String mainCSV, String secondaryCSV) {
+        List<Encuesta> encuestas = new ExtractorEncuesta().extract(mainCSV);
+        List<Encuesta> transEncuestas =  (new TransformerEncuesta(secondaryCSV)).transform(encuestas);
+        new LoaderEncuesta().load(transEncuestas);
+    }
 
-        return new ArrayList<>();
-    }
-    private static Encuesta transformEncuesta(List<EncuestaPersona> personas, String[] mainRow) {
-        // Transformar la fila del CSV en una instancia de Encuesta
-        // Asignar las personas a la encuesta
-        return new Encuesta();
-    }
-    private static List<String[]> readEncuestasPersonas(String filePath) {
-
-    }
 }

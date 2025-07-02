@@ -1,30 +1,29 @@
 package Utils.Converters;
 
-import Utils.Enums.TipoEmpleo;
+import Utils.Enums.AccesoMedicacion;
 import com.opencsv.bean.AbstractBeanField;
 
-import java.util.HashSet;
 import java.util.Set;
 
-public class TipoEmpleoConverter extends AbstractBeanField<Set<TipoEmpleo>, String> {
+public class AccesoMedicacionConverter extends AbstractBeanField<Set<AccesoMedicacion>, String> {
     @Override
-    protected Set<TipoEmpleo> convert(String value) {
+    protected Set<AccesoMedicacion> convert(String value) {
         if (value == null || value.trim().isEmpty()) {
             return Set.of(); // Retorna un conjunto vacío si el valor es nulo o vacío
         }
 
         String[] parts = value.split(",");
-        Set<TipoEmpleo> tipos = new HashSet<TipoEmpleo>();
+        Set<AccesoMedicacion> accesos = Set.of();
 
         for (String part : parts) {
             try {
-                TipoEmpleo tipo = TipoEmpleo.fromString(part.trim());
-                tipos.add(tipo);
+                AccesoMedicacion acceso = AccesoMedicacion.fromString(part.trim());
+                accesos.add(acceso);
             } catch (IllegalArgumentException e) {
                 // Manejo de error: si el valor no es reconocido, se ignora
             }
         }
 
-        return tipos;
+        return accesos;
     }
 }

@@ -19,6 +19,9 @@ public enum TipoCalefaccion {
     }
 
     public static TipoCalefaccion fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return NO_SABE;
+        }
         for (TipoCalefaccion tipo : TipoCalefaccion.values()) {
             if (tipo.descripcion.equalsIgnoreCase(value.trim())) {
                 return tipo;

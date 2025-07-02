@@ -4,7 +4,7 @@ public enum CoberturaSalud {
     PAMI("PAMI/Incluir Salud"),
     PREPAGA("Prepaga"),
     OS("Obra Social/Mutual"),
-    PUBLICO("Sistema Público de Salud"),
+    PUBLICO("Sistema Publico de Salud"),
     NO_SABE("No sabe o no contesta");
     private final String descripcion;
     CoberturaSalud(String descripcion) {
@@ -14,6 +14,9 @@ public enum CoberturaSalud {
         return descripcion;
     }
     public static CoberturaSalud fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return NO_SABE;
+        }
         for (CoberturaSalud cobertura : CoberturaSalud.values()) {
             if (cobertura.descripcion.equalsIgnoreCase(value.trim())) {
                 return cobertura;

@@ -1,12 +1,12 @@
 package Utils.Enums;
 
 public enum TipoVivienda {
-    LADRILLO("Ladrillo"),
-    MADERA("Madera"),
-    CHAPA("Chapa"),
-    MIXTO("Mixto"),
-    OTRO("Otros"),
-    NO_SABE("No sabe o no contesta");
+    LADRILLO("ladrillo"),
+    MADERA("madera"),
+    CHAPA("chapa"),
+    MIXTO("mixto"),
+    OTRO("otros"),
+    NO_SABE("no sabe o no contesta");
 
     private final String descripcion;
 
@@ -19,6 +19,9 @@ public enum TipoVivienda {
     }
 
     public static TipoVivienda fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
         for (TipoVivienda material : TipoVivienda.values()) {
             if (material.descripcion.equalsIgnoreCase(value.trim())) {
                 return material;

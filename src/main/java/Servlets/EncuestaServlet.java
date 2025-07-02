@@ -43,8 +43,8 @@ public class EncuestaServlet extends HttpServlet {
             String tipoViviendaStr = req.getParameter("tipoVivienda");
             boolean accesoAgua = Boolean.parseBoolean(req.getParameter("accesoAgua"));
             boolean aguaPotable = Boolean.parseBoolean(req.getParameter("aguaPotable"));
-            boolean accesoSalud = Boolean.parseBoolean(req.getParameter("accesoSalud"));
-            int cantidadHabitaciones = Integer.parseInt(req.getParameter("cantidadHabitaciones"));
+
+            CantidadHabitaciones cantidadHabitaciones = CantidadHabitaciones.valueOf(req.getParameter("cantidadHabitaciones"));
             boolean asistenciaAlimentaria = Boolean.parseBoolean(req.getParameter("asistenciaAlimentaria"));
             String conexionElectricaStr = req.getParameter("conexionElectrica");
             String uuidApi = req.getParameter("uuidApi");
@@ -61,9 +61,19 @@ public class EncuestaServlet extends HttpServlet {
             encuesta.setAccesoAgua(accesoAgua);
             encuesta.setAguaPotable(aguaPotable);
             encuesta.setConexionElectrica(TipoConexionElectrica.valueOf(conexionElectricaStr));
+
+            Set<AtencionSalud> atencionSalud = Arrays.stream(req.getParameter("atencionSalud").split(","))
+                    .map(String::trim)
+                    .map(AtencionSalud::valueOf)
+                    .collect(Collectors.toSet());
+            encuesta.setAtencionSalud(atencionSalud);
+            Set<TipoCalefaccion> calefaccion = Arrays.stream(req.getParameter("calefaccion").split(","))
+                    .map(String::trim)
+                    .map(TipoCalefaccion::valueOf)
+                    .collect(Collectors.toSet());
+            encuesta.setCalefaccion(calefaccion);
             encuesta.setCantidadHabitaciones(cantidadHabitaciones);
             encuesta.setAsistenciaAlimentaria(asistenciaAlimentaria);
-            encuesta.setAccesoSalud(accesoSalud);
             encuesta.setUuidApi(uuidApi);
             Jornada jornada = jornadaService.buscarJornadaPorId(jornadaId);
 
@@ -80,9 +90,21 @@ public class EncuestaServlet extends HttpServlet {
             persona.setEdad(Integer.parseInt(req.getParameter("edad")));
             persona.setGenero(Genero.valueOf(req.getParameter("genero")));
             persona.setNivelEducativo(NivelEducativo.valueOf(req.getParameter("nivelEducativo")));
-            persona.setTipoEmpleo(TipoEmpleo.valueOf(req.getParameter("tipoEmpleo")));
-            persona.setCoberturaSalud(AtencionSalud.valueOf(req.getParameter("coberturaSalud")));
-            persona.setAccesoMedicacion(AccesoMedicacion.valueOf(req.getParameter("accesoMedicacion")));
+            Set<TipoEmpleo> empleos = Arrays.stream(req.getParameter("empleos").split(","))
+                    .map(String::trim)
+                    .map(TipoEmpleo::valueOf)
+                    .collect(Collectors.toSet());
+            persona.setEmpleos(empleos);
+            Set<CoberturaSalud> coberturaSalud = Arrays.stream(req.getParameter("coberturaSalud").split(","))
+                    .map(String::trim)
+                    .map(CoberturaSalud::valueOf)
+                    .collect(Collectors.toSet());
+            persona.setCoberturaSalud(coberturaSalud);
+            Set<AccesoMedicacion> accesoMedicacion = Arrays.stream(req.getParameter("accesoMedicacion").split(","))
+                    .map(String::trim)
+                    .map(AccesoMedicacion::valueOf)
+                    .collect(Collectors.toSet());
+            encuesta.setAccesoMedicacion(accesoMedicacion);
 
             Set<Enfermedad> enfermedades = Arrays.stream(req.getParameter("enfermedades").split(","))
                     .map(String::trim)
@@ -94,7 +116,7 @@ public class EncuestaServlet extends HttpServlet {
                     .map(String::trim)
                     .map(MetodoAnticonceptivo::valueOf)
                     .collect(Collectors.toSet());
-            persona.setAnticonceptivos(anticonceptivos);
+            encuesta.setAnticonceptivos(anticonceptivos);
 
 
             persona.setEncuesta(encuesta);
@@ -147,7 +169,7 @@ public class EncuestaServlet extends HttpServlet {
         resp.getWriter().println("Agua: " + encuesta.getAccesoAgua() + ", Potable: " + encuesta.getAguaPotable());
         resp.getWriter().println("Electricidad: " + encuesta.getConexionElectrica());
         resp.getWriter().println("Habitaciones: " + encuesta.getCantidadHabitaciones());
-        resp.getWriter().println("Salud: " + encuesta.getAccesoSalud());
+        resp.getWriter().println("Salud: " + encuesta.getAtencionSalud());
         resp.getWriter().println("Asistencia alimentaria: " + encuesta.getAsistenciaAlimentaria());
 
         if (encuesta.getPersonas() != null && !encuesta.getPersonas().isEmpty()) {
@@ -155,7 +177,7 @@ public class EncuestaServlet extends HttpServlet {
             for (EncuestaPersona p : encuesta.getPersonas()) {
                 resp.getWriter().println(" - Edad: " + p.getEdad() +
                         ", Género: " + p.getGenero() +
-                        ", Empleo: " + p.getTipoEmpleo() +
+                        ", Empleo: " + p.getEmpleos() +
                         ", Salud: " + p.getCoberturaSalud());
             }
         } else {

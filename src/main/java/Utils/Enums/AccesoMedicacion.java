@@ -1,12 +1,14 @@
 package Utils.Enums;
 
+import com.opencsv.bean.AbstractBeanField;
+
 public enum AccesoMedicacion {
     CENTRO_SALUD("Centro de salud o salita pública"),
     HOSPITAL_PUBLICO("Hospital público"),
     POSTA_SALUD("Posta/operativo de salud"),
     OBRA_SOCIAL("Obra social"),
     COMPRA("Lo compra"),
-    NO_SABE("No sabe o no contesta");
+    NS_NC("No sabe o no contesta");
 
     private final String descripcion;
 
@@ -19,6 +21,9 @@ public enum AccesoMedicacion {
     }
 
     public static AccesoMedicacion fromString(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return NS_NC;
+        }
         for (AccesoMedicacion acceso : AccesoMedicacion.values()) {
             if (acceso.descripcion.equalsIgnoreCase(value.trim())) {
                 return acceso;
