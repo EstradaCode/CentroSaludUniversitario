@@ -46,4 +46,12 @@ public class OrganizacionSocial {
     public void setActividadPrincipal(String actividadPrincipal) {
         this.actividadPrincipal = actividadPrincipal;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

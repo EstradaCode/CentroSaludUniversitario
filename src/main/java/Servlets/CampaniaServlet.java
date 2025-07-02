@@ -1,7 +1,11 @@
 package Servlets;
 
+import Modelo.Barrio;
 import Modelo.Campania;
+import Modelo.OrganizacionSocial;
+import Servicios.Negocio.BarrioService;
 import Servicios.Negocio.CampaniaService;
+import Servicios.Negocio.OrganizacionSocialService;
 import Utils.EntityMgmt;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,16 +15,20 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 //@WebServlet("/campanias")
 public class CampaniaServlet extends HttpServlet {
     private CampaniaService campaniaService;
-
+    private OrganizacionSocialService organizacionService;
+    private BarrioService barrioService;
     @Override
     public void init() {
         EntityManager em = EntityMgmt.getEntityManager();
         campaniaService = new CampaniaService(em);
+        this.organizacionService = new OrganizacionSocialService(em);
+        this.barrioService= new BarrioService(em);
     }
 
     // Crear campaña
@@ -30,14 +38,41 @@ public class CampaniaServlet extends HttpServlet {
         String archivo = req.getParameter("archivo");
         LocalDate fechaInicio = LocalDate.parse(req.getParameter("fechaInicio"));
         LocalDate fechaFin = LocalDate.parse(req.getParameter("fechaFin"));
+        Long organizacionId = Long.parseLong(req.getParameter("organizacionId"));
+        OrganizacionSocial organizacion = organizacionService.buscarPorId(organizacionId);
+        if (organizacion == null) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("Organización social no encontrada.");
+            return;
+        }
+
+        String barriosParam = req.getParameter("barrios");
+        List<Barrio> barrios = new ArrayList<>();
+        if (barriosParam != null && !barriosParam.isEmpty()) {
+            String[] ids = barriosParam.split(",");
+            for (String idStr : ids) {
+                try {
+                    Long barrioId = Long.parseLong(idStr.trim());
+                    Barrio barrio = barrioService.buscarPorId(barrioId); // asegurate que este método exista
+                    if (barrio != null) {
+                        barrios.add(barrio);
+                    } else {
+                        System.out.println("Barrio no encontrado para ID: " + barrioId);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("ID de barrio inválido: " + idStr);
+                }
+            }
+        }
 
         Campania campania = new Campania();
         campania.setNombre(nombre);
         campania.setRutaArchivoEncuesta(archivo);
         campania.setFechaInicio(fechaInicio);
         campania.setFechaFin(fechaFin);
+        campania.setOrganizacionSocial(organizacion);
 
-        // Para simplificar, dejamos zonas, encuestadores y org. social vacíos de momento.
+
         campaniaService.crearCampania(campania);
         resp.getWriter().write("Campaña creada con ID: " + campania.getId());
     }
