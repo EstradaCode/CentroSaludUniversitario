@@ -2,17 +2,15 @@ package Persistencia;
 
 import Modelo.Barrio;
 import Modelo.Campania;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
 public class  BarrioDaoImpl implements BarrioDao{
-    // Implementación de los métodos de BarrioDao
+    @Inject
     private EntityManager em;
-    public BarrioDaoImpl(EntityManager em) {
-        this.em = em;
-    }
 
     @Override
     public void save(Barrio entity) {

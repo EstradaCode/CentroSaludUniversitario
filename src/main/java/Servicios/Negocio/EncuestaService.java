@@ -3,18 +3,16 @@ package Servicios.Negocio;
 import Modelo.Encuesta;
 import Persistencia.EncuestaDao;
 import Persistencia.EncuestaDaoImp;
+import jakarta.inject.Inject;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 
 import java.util.Date;
 import java.util.List;
 
 public class EncuestaService {
-
-    private final EncuestaDao encuestaDao;
-
-    public EncuestaService(EntityManager em) {
-        this.encuestaDao =new EncuestaDaoImp(em);
-    }
+    @Inject
+    private EncuestaDao encuestaDao;
 
     // Crear nueva encuesta
     public void crearEncuesta(Encuesta encuesta) {

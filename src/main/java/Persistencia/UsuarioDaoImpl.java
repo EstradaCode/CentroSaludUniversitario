@@ -1,23 +1,22 @@
 package Persistencia;
 import Modelo.Usuario;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import org.jvnet.hk2.annotations.Service;
 
 import java.util.List;
-
+@Service
+@ApplicationScoped // NECESITO ARREGLAR LA CONFIG. AUXILIO.
 public class UsuarioDaoImpl implements UsuarioDao {
-
+    @PersistenceContext
     private EntityManager em;
-
-    public UsuarioDaoImpl(EntityManager em) {
-        this.em = em;
-    }
 
     @Override
     public void save(Usuario usuario) {
-        em.getTransaction().begin();
         em.persist(usuario);
-        em.getTransaction().commit();
     }
 
     @Override
@@ -32,16 +31,12 @@ public class UsuarioDaoImpl implements UsuarioDao {
 
     @Override
     public void update(Usuario usuario) {
-        em.getTransaction().begin();
         em.merge(usuario);
-        em.getTransaction().commit();
     }
 
     @Override
     public void delete(Usuario usuario) {
-        em.getTransaction().begin();
         em.remove(em.contains(usuario) ? usuario : em.merge(usuario));
-        em.getTransaction().commit();
     }
 
     @Override

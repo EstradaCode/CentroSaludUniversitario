@@ -3,16 +3,14 @@ package Servicios.Negocio;
 import Modelo.OrganizacionSocial;
 import Persistencia.OrganizacionSocialDao;
 import Persistencia.OrganizacionSocialDaoImpl;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
-
+//final no es compatible con inject, ya que utiliza la reflexión en runtime, cosa que es contraria a final, donde ya debe estár inicializada o añadida en el constructor.
 public class OrganizacionSocialService {
-    private final OrganizacionSocialDao organizacionDao;
-
-    public OrganizacionSocialService(EntityManager em) {
-        this.organizacionDao = new OrganizacionSocialDaoImpl(em);
-    }
+    @Inject
+    private OrganizacionSocialDao organizacionDao;
 
     public void guardarOrganizacion(OrganizacionSocial organizacion) {
         organizacionDao.save(organizacion);

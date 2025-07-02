@@ -3,17 +3,14 @@ package Servicios.Negocio;
 import Modelo.Barrio;
 import Persistencia.BarrioDao;
 import Persistencia.BarrioDaoImpl;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
 public class BarrioService {
-
-    private final BarrioDao barrioDao;
-
-    public BarrioService(EntityManager em) {
-        this.barrioDao = new BarrioDaoImpl(em);
-    }
+    @Inject
+    private BarrioDao barrioDao;
 
     public void guardarBarrio(Barrio barrio) {
         barrioDao.save(barrio);

@@ -12,10 +12,7 @@ public class LoaderEncuesta implements Loader<List<Encuesta>>{
 
 
     private EncuestaService encuestaService;
-    public LoaderEncuesta() {
-        EntityManager em = EntityMgmt.getEntityManager();
-        this.encuestaService = new EncuestaService(em); // Aquí deberías pasar el EntityManager adecuado
-    }
+
     @Override
     public void load(List<Encuesta> data) {
         if (data == null || data.isEmpty()) {

@@ -1,6 +1,7 @@
 package Persistencia;
 
 import Modelo.Encuesta;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
@@ -8,12 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 public class EncuestaDaoImp implements EncuestaDao {
-
+    @Inject
     private EntityManager em;
-
-    public EncuestaDaoImp(EntityManager em) {
-        this.em = em;
-    }
 
     @Override
     public void save(Encuesta entity) {

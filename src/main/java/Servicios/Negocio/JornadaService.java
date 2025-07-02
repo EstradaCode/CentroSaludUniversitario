@@ -3,18 +3,17 @@ package Servicios.Negocio;
 import Modelo.Encuesta;
 import Modelo.Jornada;
 import Persistencia.JornadaDao;
-import Persistencia.JornadaDaoImp;
-import jakarta.persistence.EntityManager;
+
+import jakarta.inject.Inject;
+
 
 import java.util.List;
 
 public class JornadaService {
-
+    @Inject
     private JornadaDao jornadaDao;
+    @Inject
     private EncuestaService encuestaService;
-    public JornadaService(EntityManager em) {
-        this.jornadaDao = new JornadaDaoImp(em);
-    }
 
     public void crearJornada(Jornada jornada) {
         jornadaDao.save(jornada);

@@ -7,45 +7,23 @@
 
     <display-name>CentroSaludUniversitarioUNLP</display-name>
 
-    <!-- Servlet Campania -->
     <servlet>
-        <servlet-name>CampaniaServlet</servlet-name>
-        <servlet-class>Servlets.CampaniaServlet</servlet-class>
+        <servlet-name>jersey-servlet</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>Rest</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>CampaniaServlet</servlet-name>
-        <url-pattern>/campanias</url-pattern>
-    </servlet-mapping>
 
-    <!-- Servlet Jornada -->
-    <servlet>
-        <servlet-name>JornadaServlet</servlet-name>
-        <servlet-class>Servlets.JornadaServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
-        <servlet-name>JornadaServlet</servlet-name>
-        <url-pattern>/jornadas</url-pattern>
+        <servlet-name>jersey-servlet</servlet-name>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
-
-    <!-- Servlet Encuesta -->
-    <servlet>
-        <servlet-name>EncuestaServlet</servlet-name>
-        <servlet-class>Servlets.EncuestaServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>EncuestaServlet</servlet-name>
-        <url-pattern>/encuestas</url-pattern>
-    </servlet-mapping>
-
-    <!-- Servlet Usuario  -->
-    <servlet>
-        <servlet-name>UsuarioServlet</servlet-name>
-        <servlet-class>Servlets.UsuarioServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UsuarioServlet</servlet-name>
-        <url-pattern>/usuarios</url-pattern>
-    </servlet-mapping>
+    <!--<listener>
+        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+    </listener>-->
 
     <!-- Configuración adicional opcional -->
     <session-config>

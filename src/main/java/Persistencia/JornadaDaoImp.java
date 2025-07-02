@@ -1,6 +1,7 @@
 package Persistencia;
 
 import Modelo.Jornada;
+import jakarta.inject.Inject;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -8,12 +9,8 @@ import jakarta.persistence.EntityManager;
 
 
 public class JornadaDaoImp implements JornadaDao {
-
-    private final EntityManager em;
-
-    public JornadaDaoImp(EntityManager em) {
-        this.em = em;
-    }
+    @Inject
+    private EntityManager em;
 
     @Override
     public void save(Jornada jornada) {

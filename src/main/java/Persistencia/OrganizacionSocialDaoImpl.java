@@ -2,19 +2,15 @@ package Persistencia;
 
 import Modelo.Campania;
 import Modelo.OrganizacionSocial;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
 public class OrganizacionSocialDaoImpl implements OrganizacionSocialDao {
-
-    private final EntityManager em;
-
-    public OrganizacionSocialDaoImpl(EntityManager em) {
-        this.em = em;
-    }
-
+    @Inject
+    private EntityManager em;
     @Override
     public void save(OrganizacionSocial entity) {
         em.getTransaction().begin();

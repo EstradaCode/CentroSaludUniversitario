@@ -3,16 +3,15 @@ package Servicios.Negocio;
 import Modelo.Usuario;
 import Persistencia.UsuarioDao;
 import Persistencia.UsuarioDaoImpl;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import org.jvnet.hk2.annotations.Service;
 
 import java.util.List;
-
+@Service
 public class UsuarioService {
+    @Inject
     private UsuarioDao usuarioDao;
-
-    public UsuarioService(EntityManager em) {
-        this.usuarioDao = new UsuarioDaoImpl(em);
-    }
 
     public void crearUsuario(Usuario usuario) {
         usuarioDao.save(usuario);

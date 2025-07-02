@@ -5,19 +5,17 @@ import Modelo.Jornada;
 import Persistencia.CampaniaDao;
 import Persistencia.CampaniaDaoImp;
 
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class CampaniaService {
-
+    @Inject
     private CampaniaDao campaniaDao;
+    @Inject
     private JornadaService jornadaService;
-
-    public CampaniaService(EntityManager em) {
-        this.campaniaDao = new CampaniaDaoImp(em);
-    }
 
     public void crearCampania(Campania campania) {
         campaniaDao.save(campania);

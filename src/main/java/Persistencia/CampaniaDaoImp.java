@@ -7,19 +7,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
 public class CampaniaDaoImp implements CampaniaDao {
-
+    @Inject
     private EntityManager em;
-
-    public CampaniaDaoImp(EntityManager em) {
-        this.em = em;
-    }
 
     @Override
     public void save(Campania entity) {
