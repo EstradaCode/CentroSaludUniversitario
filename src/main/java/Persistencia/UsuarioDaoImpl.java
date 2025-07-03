@@ -8,7 +8,6 @@ import jakarta.persistence.PersistenceContext;
 import org.jvnet.hk2.annotations.Service;
 
 import java.util.List;
-@Service
 @ApplicationScoped // NECESITO ARREGLAR LA CONFIG. AUXILIO.
 public class UsuarioDaoImpl implements UsuarioDao {
     @PersistenceContext

@@ -3,12 +3,12 @@ package Servicios.Negocio;
 import Modelo.Usuario;
 import Persistencia.UsuarioDao;
 import Persistencia.UsuarioDaoImpl;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import org.jvnet.hk2.annotations.Service;
 
 import java.util.List;
-@Service
+@RequestScoped
 public class UsuarioService {
     @Inject
     private UsuarioDao usuarioDao;

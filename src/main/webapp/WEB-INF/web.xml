@@ -21,9 +21,10 @@
         <servlet-name>jersey-servlet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
-    <!--<listener>
+
+    <listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
-    </listener>-->
+    </listener>
 
     <!-- Configuración adicional opcional -->
     <session-config>
