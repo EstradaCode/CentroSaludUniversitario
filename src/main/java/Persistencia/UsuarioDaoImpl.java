@@ -1,16 +1,16 @@
 package Persistencia;
 import Modelo.Usuario;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
-import org.jvnet.hk2.annotations.Service;
 
 import java.util.List;
-@ApplicationScoped // NECESITO ARREGLAR LA CONFIG. AUXILIO.
+@RequestScoped // NECESITO ARREGLAR LA CONFIG. AUXILIO.
 public class UsuarioDaoImpl implements UsuarioDao {
-    @PersistenceContext
+    @Inject
     private EntityManager em;
 
     @Override
