@@ -12,7 +12,7 @@ public class BarrioService {
     @Inject
     private BarrioDao barrioDao;
 
-    public void guardarBarrio(Barrio barrio) {
+    public void crearBarrio(Barrio barrio) {
         barrioDao.save(barrio);
     }
 

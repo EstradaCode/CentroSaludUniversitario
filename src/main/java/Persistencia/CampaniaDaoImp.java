@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

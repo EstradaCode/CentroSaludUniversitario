@@ -1,5 +1,6 @@
 package Modelo;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 import java.util.List;

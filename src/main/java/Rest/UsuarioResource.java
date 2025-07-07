@@ -39,10 +39,13 @@ public class UsuarioResource {
         }
     }
 
+
     @POST
     public Response crear(Usuario usuario) {
         usuarioService.crearUsuario(usuario);
+        System.out.println("Usuario creado: " + usuario.getUsername());
         return Response.status(Response.Status.CREATED).build();
+
     }
 
     @PUT
