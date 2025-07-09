@@ -38,7 +38,7 @@ public class ZonaResource {
         }
     }
     @GET
-    @Path("/{nombre}")
+    @Path("/nombre/{nombre}")
     public Response obtenerPorNombre(@PathParam("nombre") String nombre) {
         List<Zona> zona = zonaService.buscarZonasPorNombre(nombre);
         if (zona != null) {
@@ -50,7 +50,7 @@ public class ZonaResource {
         }
     }
     @PUT
-    @Path("/{id}")
+    @Path("/id/{id}")
     public Response actualizar(@PathParam("id") Long id, Zona zona) {
         zona.setId(id);
         zonaService.actualizarZona(zona);
