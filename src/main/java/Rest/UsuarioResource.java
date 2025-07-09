@@ -62,4 +62,30 @@ public class UsuarioResource {
         usuarioService.eliminarUsuario(id);
         return Response.noContent().build();
     }
+    @PUT
+    @Path("/{id}/habilitar")
+    public Response habilitarUsuario(@PathParam("id") Long id) {
+        Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+        if (usuario == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Usuario no encontrado con id " + id)
+                    .build();
+        }
+        usuarioService.habilitarUsuario(id);
+        return Response.ok().entity("Usuario habilitado").build();
+    }
+
+    @PUT
+    @Path("/{id}/deshabilitar")
+    public Response deshabilitarUsuario(@PathParam("id") Long id) {
+        Usuario usuario = usuarioService.buscarUsuarioPorId(id);
+        if (usuario == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("Usuario no encontrado con id " + id)
+                    .build();
+        }
+        usuarioService.deshabilitarUsuario(id);
+        return Response.ok().entity("Usuario deshabilitado").build();
+    }
+
 }

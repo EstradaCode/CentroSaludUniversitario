@@ -1,12 +1,9 @@
 package Persistencia;
 import Modelo.Usuario;
-import Utils.EntityMgmt;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -84,4 +81,24 @@ public class UsuarioDaoImpl implements UsuarioDao {
             return null;
         }
     }
+    @Override
+    @Transactional
+    public void habilitarUsuario(Long id) {
+        Usuario usuario = findById(id);
+        if (usuario != null) {
+            usuario.setEnabled(true);
+            em.merge(usuario);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deshabilitarUsuario(Long id) {
+        Usuario usuario = findById(id);
+        if (usuario != null) {
+            usuario.setEnabled(false);
+            em.merge(usuario);
+        }
+    }
+
 }

@@ -14,10 +14,12 @@ import jakarta.ws.rs.core.Response;
 public class EncuestadorResource {
     @Inject
     private EncuestadorService encuestadorService;
+
     @GET
     public Response listarEncuestadores() {
         return Response.ok(encuestadorService.listarEncuestadores()).build();
     }
+
     @GET
     @Path("/{id}")
     public Response obtenerEncuestadorPorId(Long id) {
@@ -30,11 +32,13 @@ public class EncuestadorResource {
                     .build();
         }
     }
+
     @POST
     public Response crearEncuestador(Encuestador encuestador) {
         encuestadorService.crearEncuestador(encuestador);
         return Response.status(Response.Status.CREATED).build();
     }
+
     @PUT
     @Path("/{id}")
     public Response actualizarEncuestador(@PathParam("id") Long id, Encuestador encuestador) {
@@ -42,6 +46,7 @@ public class EncuestadorResource {
         encuestadorService.actualizarEncuestador(encuestador);
         return Response.ok().build();
     }
+
     @DELETE
     @Path("/{id}")
     public Response eliminarEncuestador(@PathParam("id") Long id) {
@@ -55,4 +60,5 @@ public class EncuestadorResource {
                     .build();
         }
 
+    }
 }
