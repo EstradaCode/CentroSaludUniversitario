@@ -40,8 +40,17 @@ public class UsuarioService {
     public Usuario buscarPorEmail(String email) {
         return usuarioDao.findByEmail(email);
     }
+
     public Usuario buscarPorDni(Long dni) {
         return usuarioDao.findByDni(dni);
     }
+    public void habilitarUsuario(Long id) {
+        usuarioDao.habilitarUsuario(id);
+    }
+
+    public void deshabilitarUsuario(Long id) {
+        usuarioDao.deshabilitarUsuario(id);
+    }
+
 }
 

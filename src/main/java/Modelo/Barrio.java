@@ -12,14 +12,14 @@ public class Barrio {
     private String nombre;
     @ElementCollection
     @CollectionTable(name = "barrio_coordenadas", joinColumns = @JoinColumn(name = "barrio_id"))
-    private List<GeoPoint> coordenadas;
+    private List<Zona> zonas;
 
 
     public Barrio() {
     }
 
-    public Barrio(List<GeoPoint> coordenadas, String nombre) {
-        this.coordenadas = coordenadas;
+    public Barrio(List<Zona> zonas, String nombre) {
+        this.zonas = zonas;
         this.nombre = nombre;
     }
     public String getNombre() {
@@ -28,11 +28,11 @@ public class Barrio {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public List<GeoPoint> getCoordenadas() {
-        return coordenadas;
+    public List<Zona> getZonas() {
+        return zonas;
     }
-    public void setCoordenadas(List<GeoPoint> coordenadas) {
-        this.coordenadas = coordenadas;
+    public void setZonas(List<Zona> zonas) {
+        this.zonas = zonas;
     }
 
     public Long getId() {

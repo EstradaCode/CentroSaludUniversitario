@@ -1,5 +1,6 @@
 package Modelo;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class Usuario extends Persona{
     private String password;
     @Column(nullable = false,unique = true)
     private String email;
-    private Boolean isApprobed;
+    private Boolean enabled;
     @Enumerated(EnumType.STRING)
     private Roles rol;
     // no es necesario utilizar column si no quiero configurar algo especifico
@@ -33,7 +34,7 @@ public class Usuario extends Persona{
         this.username = username;
         this.password = password;
         this.email = email;
-        this.isApprobed = false;
+        this.enabled = false;
         this.matricula = matricula;
         this.filtros = filtros;
         switch (rolEnString) {
@@ -76,12 +77,12 @@ public class Usuario extends Persona{
         this.email = email;
     }
 
-    public Boolean isApprobed() {
-        return isApprobed;
+    public Boolean isEnabled() {
+        return enabled;
     }
 
-    public void setApprobed(Boolean Approbed) {
-        isApprobed = Approbed;
+    public void setEnabled(Boolean Approbed) {
+        enabled = Approbed;
     }
     public Roles getRol() {
         return rol;
@@ -103,7 +104,7 @@ public class Usuario extends Persona{
     }
 
     public Boolean getApprobed() {
-        return isApprobed;
+        return enabled;
     }
 
     @Override

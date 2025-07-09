@@ -65,5 +65,12 @@ public class Jornada {
     public void setCampania(Campania campania) {
         this.campania = campania;
     }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 }
+
