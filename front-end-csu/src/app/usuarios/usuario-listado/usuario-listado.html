@@ -1,0 +1,23 @@
+<h2>Usuarios</h2>
+<button routerLink="/usuarios/nuevo">Agregar Usuario</button>
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Rol</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let u of usuarios">
+      <td>{{ u.username }}</td>
+      <td>{{ u.email }}</td>
+      <td>{{ u.rol }}</td>
+      <td>
+        <button (click)="eliminar(u.id!)">Eliminar</button>
+        <!-- Aquí irían botones de editar, etc. -->
+      </td>
+    </tr>
+  </tbody>
+</table>
