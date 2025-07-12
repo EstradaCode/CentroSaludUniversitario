@@ -1,0 +1,21 @@
+<h2>Agregar Usuario</h2>
+
+<form (ngSubmit)="onSubmit()" #usuarioForm="ngForm">
+  <input type="text" name="username" [(ngModel)]="usuario.username" placeholder="Username" required />
+  <input type="text" name="nombre" [(ngModel)]="usuario.nombre" placeholder="Nombre" required />
+  <input type="text" name="apellido" [(ngModel)]="usuario.apellido" placeholder="Apellido" required />
+  <input type="email" name="email" [(ngModel)]="usuario.email" placeholder="Email" required />
+  <input type="text" name="telefono" [(ngModel)]="usuario.telefono" placeholder="Teléfono" />
+  <input type="number" name="dni" [(ngModel)]="usuario.dni" placeholder="DNI" required />
+  <input type="number" name="matricula" [(ngModel)]="usuario.matricula" placeholder="Matrícula" />
+  <input type="password" name="password" [(ngModel)]="usuario.password" placeholder="Contraseña" required />
+  <select name="rol" [(ngModel)]="usuario.rol" required>
+    <option value="" disabled selected>Seleccionar rol</option>
+    <option value="ADMIN">ADMIN</option>
+    <option value="SALUD">SALUD</option>
+    <option value="VISITANTE">VISITANTE</option>
+  </select>
+
+  <button type="submit">Guardar</button>
+</form>
+

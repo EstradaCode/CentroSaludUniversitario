@@ -11,7 +11,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 // aclaración con imports -> ws jax-rs | inject cdi
 import java.util.List;
-
 @Path("/usuarios")
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
