@@ -15,12 +15,19 @@ export class UsuarioListadoComponent implements OnInit {
   constructor(private usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
-    this.usuarioService.listar().subscribe(data => this.usuarios = data);
+    this.obtenerUsuarios();
   }
+  obtenerUsuarios(): void {
+  this.usuarioService.listar().subscribe(data => this.usuarios = data);
+}
 
-  eliminar(id: number) {
+ eliminarUsuario(id: number): void {
+  if (confirm('¿Estás seguro que querés eliminar este usuario?')) {
     this.usuarioService.eliminar(id).subscribe(() => {
       this.usuarios = this.usuarios.filter(u => u.id !== id);
     });
   }
 }
+
+}
+

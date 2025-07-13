@@ -1,4 +1,4 @@
-package Utils;
+package Rest;
 
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerRequestContext;

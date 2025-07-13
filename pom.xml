@@ -19,6 +19,13 @@
         <weld.version>4.0.3.Final</weld.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!--  Jersey  -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>

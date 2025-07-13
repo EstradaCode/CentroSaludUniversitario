@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 })
 export class UsuarioFormularioComponent {
   usuario: Usuario = {
-    id: 0,
     username: '',
     nombre: '',
     apellido: '',
