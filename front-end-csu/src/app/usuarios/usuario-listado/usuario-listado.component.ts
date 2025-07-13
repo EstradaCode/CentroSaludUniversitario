@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 })
 export class UsuarioListadoComponent implements OnInit {
   usuarios: Usuario[] = [];
+usuarioEnEdicion: Usuario | null = null;
 
   constructor(private usuarioService: UsuarioService) {}
 
@@ -28,6 +29,23 @@ export class UsuarioListadoComponent implements OnInit {
     });
   }
 }
+editarUsuario(usuario: Usuario): void {
+  this.usuarioEnEdicion = { ...usuario }; // Clonamos para no modificar directo
+}
+
+guardarCambios(): void {
+  if (this.usuarioEnEdicion && this.usuarioEnEdicion.id != null) {
+    this.usuarioService.actualizar(this.usuarioEnEdicion).subscribe(() => {
+      this.obtenerUsuarios(); // Refrescar datos
+      this.usuarioEnEdicion = null; // Salir del modo edición
+    });
+  }
+}
+
+cancelarEdicion(): void {
+  this.usuarioEnEdicion = null;
+}
+
 
 }
 
