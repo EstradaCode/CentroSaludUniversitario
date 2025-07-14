@@ -1,0 +1,24 @@
+<h2>Listado de Campañas</h2>
+<button routerLink="/campanias/nueva">Agregar Campaña</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Inicio</th>
+      <th>Fin</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let campania of campanias">
+      <td>{{ campania.nombre }}</td>
+      <td>{{ campania.fechaInicio }}</td>
+      <td>{{ campania.fechaFin }}</td>
+      <td>
+        <button (click)="editarCampania(campania.id!)">Editar</button>
+        <button (click)="eliminarCampania(campania.id!)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

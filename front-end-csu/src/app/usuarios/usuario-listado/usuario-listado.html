@@ -16,7 +16,8 @@
       <td>{{ usuario.rol }}</td>
       <td>
         <button (click)="eliminarUsuario(usuario.id!)">Eliminar</button>
-        <!-- Aquí irían botones de editar, etc. -->
+        <button [routerLink]="['/usuarios/editar', usuario.id]">Editar</button>
+
       </td>
     </tr>
   </tbody>

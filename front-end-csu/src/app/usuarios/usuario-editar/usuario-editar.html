@@ -1,1 +1,24 @@
-<p>usuario-editar works!</p>
+<h2>Editar Usuario</h2>
+
+<div *ngIf="usuario">
+  <form (ngSubmit)="guardar()">
+    <input [(ngModel)]="usuario.username" name="username" placeholder="Username" />
+    <input [(ngModel)]="usuario.nombre" name="nombre" placeholder="Nombre" />
+    <input [(ngModel)]="usuario.apellido" name="apellido" placeholder="Apellido" />
+    <input [(ngModel)]="usuario.email" name="email" placeholder="Email" />
+    <input [(ngModel)]="usuario.telefono" name="telefono" type="number" placeholder="Teléfono" />
+    <input [(ngModel)]="usuario.dni" name="dni" type="number" placeholder="DNI" />
+    <input [(ngModel)]="usuario.matricula" name="matricula" type="number" placeholder="Matrícula" />
+    <input [(ngModel)]="usuario.password" name="password" type="password" placeholder="Contraseña" />
+    <select [(ngModel)]="usuario.rol" name="rol">
+      <option value="ADMIN">ADMIN</option>
+      <option value="SALUD">SALUD</option>
+      <option value="VISITANTE">VISITANTE</option>
+    </select>
+
+    <button type="submit">Guardar</button>
+    <button type="button" (click)="cancelar()">Cancelar</button>
+  </form>
+</div>
+
+

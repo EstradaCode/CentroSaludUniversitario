@@ -1,0 +1,27 @@
+<h2>Jornadas</h2>
+<button routerLink="/jornadas/nueva">Agregar Jornada</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Campaña</th>
+      <th>Fecha</th>
+      <th>Hora Inicio</th>
+      <th>Hora Fin</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let jornada of jornadas">
+      <td>{{ jornada.campania?.nombre }}</td>
+      <td>{{ jornada.fecha }}</td>
+      <td>{{ jornada.horaInicio }}</td>
+      <td>{{ jornada.horaFin }}</td>
+      <td>
+        <button (click)="editarJornada(jornada.id!)">Editar</button>
+        <button (click)="eliminarJornada(jornada.id!)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
