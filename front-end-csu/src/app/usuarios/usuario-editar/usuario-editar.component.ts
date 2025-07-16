@@ -1,18 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UsuarioService } from '../usuario.service';
-import { Usuario } from '../usuario.model';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UsuarioService } from '../usuario.service';
+import { Usuario } from '../usuario.model';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-usuario-editar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './usuario-editar.html'
+  templateUrl: './usuario-editar.html',
+  styleUrls: ['./usuario-editar.scss'],
+  imports: [
+  CommonModule,
+  FormsModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule,
+  MatSelectModule,
+  MatOptionModule,
+  RouterModule
+],
 })
 export class UsuarioEditarComponent implements OnInit {
-  usuario: Usuario = {} as Usuario;
+  usuario: Usuario = {
+    username: '',
+    nombre: '',
+    apellido: '',
+    email: '',
+    telefono: 0,
+    dni: 0,
+    matricula: 0,
+    password: '',
+    rol: 'VISITANTE',
+    enabled: false,
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -20,27 +46,23 @@ export class UsuarioEditarComponent implements OnInit {
     private usuarioService: UsuarioService
   ) {}
 
- ngOnInit(): void {
-  console.log('ngOnInit ejecutado');
-  this.route.paramMap.subscribe(params => {
-    const id = Number(params.get('id'));
-    console.log('ID recibido:', id);
-    this.usuarioService.obtener(id).subscribe(data => {
-      console.log('Usuario cargado:', data);
-      this.usuario = data;
-    });
-  });
-}
-
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.usuarioService.obtener(+id).subscribe((data) => {
+        this.usuario = data;
+      });
+    }
+  }
 
   guardar(): void {
     this.usuarioService.actualizar(this.usuario).subscribe(() => {
-      alert('Usuario actualizado correctamente');
+      alert('Usuario actualizado con éxito.');
       this.router.navigate(['/usuarios']);
     });
   }
-
   cancelar(): void {
-    this.router.navigate(['/usuarios']);
-  }
+  this.router.navigate(['/usuarios']);
 }
+}
+

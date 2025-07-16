@@ -1,24 +1,58 @@
-<h2>Editar Usuario</h2>
+<div class="form-container">
+  <h2>Editar Usuario</h2>
+  <form class="usuario-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Username*</mat-label>
+      <input matInput [(ngModel)]="usuario.username" name="username" required>
+    </mat-form-field>
 
-<div *ngIf="usuario">
-  <form (ngSubmit)="guardar()">
-    <input [(ngModel)]="usuario.username" name="username" placeholder="Username" />
-    <input [(ngModel)]="usuario.nombre" name="nombre" placeholder="Nombre" />
-    <input [(ngModel)]="usuario.apellido" name="apellido" placeholder="Apellido" />
-    <input [(ngModel)]="usuario.email" name="email" placeholder="Email" />
-    <input [(ngModel)]="usuario.telefono" name="telefono" type="number" placeholder="Teléfono" />
-    <input [(ngModel)]="usuario.dni" name="dni" type="number" placeholder="DNI" />
-    <input [(ngModel)]="usuario.matricula" name="matricula" type="number" placeholder="Matrícula" />
-    <input [(ngModel)]="usuario.password" name="password" type="password" placeholder="Contraseña" />
-    <select [(ngModel)]="usuario.rol" name="rol">
-      <option value="ADMIN">ADMIN</option>
-      <option value="SALUD">SALUD</option>
-      <option value="VISITANTE">VISITANTE</option>
-    </select>
+    <mat-form-field appearance="outline">
+      <mat-label>Contraseña*</mat-label>
+      <input matInput [(ngModel)]="usuario.password" name="password" type="password" required>
+    </mat-form-field>
 
-    <button type="submit">Guardar</button>
-    <button type="button" (click)="cancelar()">Cancelar</button>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="usuario.nombre" name="nombre">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Apellido</mat-label>
+      <input matInput [(ngModel)]="usuario.apellido" name="apellido">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="usuario.email" name="email" type="email">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>DNI</mat-label>
+      <input matInput [(ngModel)]="usuario.dni" name="dni" type="number">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Teléfono</mat-label>
+      <input matInput [(ngModel)]="usuario.telefono" name="telefono" type="number">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Matrícula</mat-label>
+      <input matInput [(ngModel)]="usuario.matricula" name="matricula" type="number">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Rol*</mat-label>
+      <mat-select [(ngModel)]="usuario.rol" name="rol" required>
+        <mat-option value="ADMIN">ADMIN</mat-option>
+        <mat-option value="ENCUESTADOR">ENCUESTADOR</mat-option>
+        <mat-option value="VISITANTE">VISITANTE</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="form-buttons">
+      <button mat-flat-button color="primary" (click)="guardar()">Guardar cambios</button>
+      <button mat-button color="warn" (click)="cancelar()">Cancelar</button>
+    </div>
   </form>
 </div>
-
-
