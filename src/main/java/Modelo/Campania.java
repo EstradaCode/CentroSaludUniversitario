@@ -21,7 +21,8 @@ public class Campania {
     private List<Encuestador>  encuestadores;
     @OneToMany(mappedBy = "campania", cascade = CascadeType.ALL)
     private List<Jornada> jornadas;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "organizacionSocial_id")
     private OrganizacionSocial organizacionSocial;
 
     public Campania() {

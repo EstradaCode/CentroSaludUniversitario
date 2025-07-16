@@ -10,8 +10,8 @@ public class Barrio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    @ElementCollection
-    @CollectionTable(name = "barrio_coordenadas", joinColumns = @JoinColumn(name = "barrio_id"))
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "barrio_id")
     private List<Zona> zonas;
 
 
