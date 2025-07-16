@@ -1,6 +1,7 @@
 package Modelo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Zona {
     @ManyToOne
     @JoinColumn(name = "barrio_id")
     @Schema(description = "Barrio al que pertenece esta zona", implementation = Barrio.class)
+    @JsonbTransient
     private Barrio barrio;
 
     public Zona() {

@@ -26,7 +26,7 @@ public class  BarrioDaoImpl implements BarrioDao{
 
     @Override
     public List<Barrio> findAll() {
-        return em.createQuery("SELECT b FROM Campania b", Barrio.class).getResultList();
+        return em.createQuery("SELECT b FROM Barrio b", Barrio.class).getResultList();
     }
 
     @Override

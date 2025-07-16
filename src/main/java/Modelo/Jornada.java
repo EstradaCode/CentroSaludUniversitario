@@ -1,6 +1,7 @@
 package Modelo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class Jornada {
 
     @ManyToOne
     @Schema(description = "Campaña asociada a la jornada. Solo se necesita el ID al crear.", implementation = Campania.class)
+    @JsonbTransient
     private Campania campania;
 
     @Schema(description = "Hora de inicio de la jornada (HH:mm)", example = "09:00", required = true)
