@@ -3,11 +3,12 @@ import { JornadaService } from '../jornada.service';
 import { Jornada } from '../jornada.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { MaterialModule } from '../../material.module';
 
 @Component({
   selector: 'app-jornada-listado',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,MaterialModule],
   templateUrl: './jornada-listado.html',
 })
 export class JornadaListadoComponent implements OnInit {
