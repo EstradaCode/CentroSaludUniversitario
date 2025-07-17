@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CampaniaService } from '../campania.service';
-import { Campania } from '../campania.model';
+import { JornadaService } from '../jornada.service';
+import { Jornada } from '../jornada.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-campania-editar',
+  selector: 'app-jornada-editar',
   standalone: true,
-  templateUrl: './campania-editar.html',
-  styleUrls: ['./campania-editar.scss'],
+  templateUrl: './jornada-editar.html',
+  styleUrls: ['./jornada-editar.scss'],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,39 +22,37 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ]
 })
-export class CampaniaEditarComponent implements OnInit {
-  campania: Campania = {
-    nombre: '',
-    rutaArchivoEncuesta: '',
-    fechaInicio: '',
-    fechaFin: '',
-    organizacionSocial: { id: 1 } // temporal por ahora
+export class JornadaEditarComponent implements OnInit {
+  jornada: Jornada = {
+    fecha: '',
+    horaInicio: '',
+    horaFin: '',
+    campania: { id: 0 }
   };
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private campaniaService: CampaniaService
+    private jornadaService: JornadaService
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.campaniaService.obtener(+id).subscribe(data => {
-        this.campania = data;
+      this.jornadaService.obtener(+id).subscribe(data => {
+        this.jornada = data;
       });
     }
   }
 
   guardar(): void {
-    this.campaniaService.actualizar(this.campania).subscribe(() => {
-      alert('Campaña actualizada con éxito.');
-      this.router.navigate(['/campanias']);
+    this.jornadaService.actualizar(this.jornada).subscribe(() => {
+      alert('Jornada actualizada.');
+      this.router.navigate(['/jornadas']);
     });
   }
 
   cancelar(): void {
-    this.router.navigate(['/campanias']);
+    this.router.navigate(['/jornadas']);
   }
 }
-

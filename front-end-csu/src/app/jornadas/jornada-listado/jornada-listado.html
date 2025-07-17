@@ -1,27 +1,31 @@
 <h2>Jornadas</h2>
-<button routerLink="/jornadas/nueva">Agregar Jornada</button>
 
-<table>
-  <thead>
-    <tr>
-      <th>Campaña</th>
-      <th>Fecha</th>
-      <th>Hora Inicio</th>
-      <th>Hora Fin</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let jornada of jornadas">
-      <td>{{ jornada.campania?.nombre }}</td>
-      <td>{{ jornada.fecha }}</td>
-      <td>{{ jornada.horaInicio }}</td>
-      <td>{{ jornada.horaFin }}</td>
-      <td>
-        <button (click)="editarJornada(jornada.id!)">Editar</button>
-        <button (click)="eliminarJornada(jornada.id!)">Eliminar</button>
-      </td>
-    </tr>
-  </tbody>
+<table mat-table [dataSource]="jornadas" class="mat-elevation-z8" style="width: 100%;">
+  <ng-container matColumnDef="fecha">
+    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+    <td mat-cell *matCellDef="let j"> {{ j.fecha }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="horaInicio">
+    <th mat-header-cell *matHeaderCellDef> Inicio </th>
+    <td mat-cell *matCellDef="let j"> {{ j.horaInicio }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="horaFin">
+    <th mat-header-cell *matHeaderCellDef> Fin </th>
+    <td mat-cell *matCellDef="let j"> {{ j.horaFin }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let j">
+      <button mat-button color="warn" (click)="eliminar(j.id!)">Eliminar</button>
+      <button mat-button color="primary" [routerLink]="['/jornadas/editar', j.id]">Editar</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['fecha', 'horaInicio', 'horaFin', 'acciones']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['fecha', 'horaInicio', 'horaFin', 'acciones'];"></tr>
 </table>
+
 

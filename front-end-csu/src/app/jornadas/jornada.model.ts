@@ -2,8 +2,11 @@ import { Campania } from '../campañas/campania.model';
 
 export interface Jornada {
   id?: number;
-  campania: Campania;
-  fecha: string; // 'YYYY-MM-DD'
-  horaInicio: string; // 'HH:mm'
-  horaFin: string;    // 'HH:mm'
+  fecha: string;         // formato yyyy-MM-dd
+  horaInicio: string;    // formato HH:mm
+  horaFin: string;       // formato HH:mm
+  campania: {
+    id: number;
+  };
 }
+

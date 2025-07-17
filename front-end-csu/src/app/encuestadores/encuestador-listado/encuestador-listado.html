@@ -1,0 +1,30 @@
+<h2>Encuestadores</h2>
+<button mat-flat-button color="primary" routerLink="/encuestadores/nuevo">Agregar encuestador</button>
+
+<table mat-table [dataSource]="encuestadores" class="mat-elevation-z8" style="width: 100%;">
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+    <td mat-cell *matCellDef="let e"> {{ e.nombre }} {{ e.apellido }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="dni">
+    <th mat-header-cell *matHeaderCellDef> DNI </th>
+    <td mat-cell *matCellDef="let e"> {{ e.dni }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="barrio">
+    <th mat-header-cell *matHeaderCellDef> Barrio </th>
+    <td mat-cell *matCellDef="let e"> {{ e.barrio?.id }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let e">
+      <button mat-button color="primary" [routerLink]="['/encuestadores/editar', e.id]">Editar</button>
+      <button mat-button color="warn" (click)="eliminar(e.id!)">Eliminar</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['nombre', 'dni', 'barrio', 'acciones']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['nombre', 'dni', 'barrio', 'acciones'];"></tr>
+</table>

@@ -31,17 +31,19 @@ export class UsuarioListadoComponent implements OnInit {
   usuarioEnEdicion: Usuario | null = null;
 
   constructor(private usuarioService: UsuarioService) {}
+ngOnInit(): void {
+  this.obtenerUsuarios();
+}
 
-  ngOnInit(): void {
-    this.obtenerUsuarios();
-  }
-
-  obtenerUsuarios(): void {
-    this.usuarioService.listar().subscribe(data => {
+obtenerUsuarios(): void {
+  this.usuarioService.listar().subscribe(data => {
+    setTimeout(() => {
       this.usuarios = data;
-      this.usuariosFiltrados = data; // Cargamos filtrados también al inicio
+      this.usuariosFiltrados = data;
     });
-  }
+  });
+}
+
 
   aplicarFiltro(): void {
     const filtroLower = this.filtro.toLowerCase();

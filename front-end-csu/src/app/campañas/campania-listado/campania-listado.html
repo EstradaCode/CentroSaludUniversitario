@@ -1,24 +1,35 @@
-<h2>Listado de Campañas</h2>
-<button routerLink="/campanias/nueva">Agregar Campaña</button>
+<h2>Campañas</h2>
+<div style="display: flex; align-items: center; gap: 1rem;">
+  <mat-form-field appearance="outline">
+    <mat-label>Buscar campaña</mat-label>
+    <input matInput [(ngModel)]="filtro" (input)="aplicarFiltro()" placeholder="Nombre">
+  </mat-form-field>
+  <button mat-flat-button color="primary" [routerLink]="['/campanias/nueva']">
+    Agregar campaña
+  </button>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Inicio</th>
-      <th>Fin</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let campania of campanias">
-      <td>{{ campania.nombre }}</td>
-      <td>{{ campania.fechaInicio }}</td>
-      <td>{{ campania.fechaFin }}</td>
-      <td>
-        <button (click)="editarCampania(campania.id!)">Editar</button>
-        <button (click)="eliminarCampania(campania.id!)">Eliminar</button>
-      </td>
-    </tr>
-  </tbody>
+<table mat-table [dataSource]="campaniasFiltradas" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+    <td mat-cell *matCellDef="let c"> {{c.nombre}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fechas">
+    <th mat-header-cell *matHeaderCellDef> Fechas </th>
+    <td mat-cell *matCellDef="let c"> {{c.fechaInicio}} a {{c.fechaFin}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let c">
+      <button mat-button color="warn" (click)="eliminarCampania(c.id!)">Eliminar</button>
+      <button mat-button color="primary" [routerLink]="['/campanias/editar', c.id]">Editar</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['nombre', 'fechas', 'acciones']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['nombre', 'fechas', 'acciones'];"></tr>
 </table>
+

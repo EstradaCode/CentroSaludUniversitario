@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CampaniaService } from '../campania.service';
-import { Campania } from '../campania.model';
+import { EncuestadorService } from '../encuestador.service';
+import { Encuestador } from '../encuestador.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-campania-editar',
+  selector: 'app-encuestador-editar',
   standalone: true,
-  templateUrl: './campania-editar.html',
-  styleUrls: ['./campania-editar.scss'],
+  templateUrl: './encuestador-editar.html',
+  styleUrls: ['./encuestador-editar.scss'],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,39 +22,37 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ]
 })
-export class CampaniaEditarComponent implements OnInit {
-  campania: Campania = {
+export class EncuestadorEditarComponent implements OnInit {
+  encuestador: Encuestador = {
     nombre: '',
-    rutaArchivoEncuesta: '',
-    fechaInicio: '',
-    fechaFin: '',
-    organizacionSocial: { id: 1 } // temporal por ahora
+    apellido: '',
+    dni: 0,
+    telefono: 0,
+    horasTrabajadas: 0,
+    barrio: { id: 0 }
   };
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private campaniaService: CampaniaService
+    private service: EncuestadorService
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.campaniaService.obtener(+id).subscribe(data => {
-        this.campania = data;
-      });
+      this.service.obtener(+id).subscribe(data => this.encuestador = data);
     }
   }
 
   guardar(): void {
-    this.campaniaService.actualizar(this.campania).subscribe(() => {
-      alert('Campaña actualizada con éxito.');
-      this.router.navigate(['/campanias']);
+    this.service.actualizar(this.encuestador).subscribe(() => {
+      alert('Encuestador actualizado');
+      this.router.navigate(['/encuestadores']);
     });
   }
 
   cancelar(): void {
-    this.router.navigate(['/campanias']);
+    this.router.navigate(['/encuestadores']);
   }
 }
-

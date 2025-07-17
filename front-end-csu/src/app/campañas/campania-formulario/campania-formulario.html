@@ -1,1 +1,28 @@
-<p>campania-formulario works!</p>
+<h2>{{ modoEdicion ? 'Editar' : 'Nueva' }} campaña</h2>
+<form (ngSubmit)="guardar()">
+  <mat-form-field appearance="outline">
+    <mat-label>Nombre</mat-label>
+    <input matInput [(ngModel)]="campania.nombre" name="nombre" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Archivo encuesta</mat-label>
+    <input matInput [(ngModel)]="campania.rutaArchivoEncuesta" name="rutaArchivoEncuesta">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha inicio</mat-label>
+    <input matInput type="date" [(ngModel)]="campania.fechaInicio" name="fechaInicio">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha fin</mat-label>
+    <input matInput type="date" [(ngModel)]="campania.fechaFin" name="fechaFin">
+  </mat-form-field>
+
+  <!-- Por ahora hardcodeamos org. social -->
+  <input type="hidden" [(ngModel)]="campania.organizacionSocial.id" name="orgId">
+
+  <button mat-flat-button color="primary" type="submit">Guardar</button>
+  <button mat-button [routerLink]="['/campanias']">Cancelar</button>
+</form>

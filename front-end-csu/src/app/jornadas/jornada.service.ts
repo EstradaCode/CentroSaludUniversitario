@@ -3,9 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Jornada } from './jornada.model';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class JornadaService {
   private apiUrl = 'http://localhost:8080/api/jornadas';
 
@@ -19,15 +17,16 @@ export class JornadaService {
     return this.http.get<Jornada>(`${this.apiUrl}/${id}`);
   }
 
-  crear(jornada: Jornada): Observable<Jornada> {
-    return this.http.post<Jornada>(this.apiUrl, jornada);
+  crear(jornada: Jornada): Observable<any> {
+    return this.http.post(this.apiUrl, jornada);
   }
 
-  actualizar(jornada: Jornada): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${jornada.id}`, jornada);
+  actualizar(jornada: Jornada): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${jornada.id}`, jornada);
   }
 
-  eliminar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  eliminar(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
+

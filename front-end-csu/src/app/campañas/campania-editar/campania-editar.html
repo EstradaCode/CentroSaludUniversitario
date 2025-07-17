@@ -1,1 +1,43 @@
-<p>campania-editar works!</p>
+<div class="form-container">
+  <h2>Editar Campaña</h2>
+  <form class="campania-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="campania.nombre" name="nombre" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Archivo de Encuesta</mat-label>
+      <input matInput [(ngModel)]="campania.rutaArchivoEncuesta" name="rutaArchivoEncuesta">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de Inicio</mat-label>
+      <input matInput type="date" [(ngModel)]="campania.fechaInicio" name="fechaInicio">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de Fin</mat-label>
+      <input matInput type="date" [(ngModel)]="campania.fechaFin" name="fechaFin">
+    </mat-form-field>
+    <button mat-flat-button color="accent" [routerLink]="['/jornadas/nueva']" [queryParams]="{ campaniaId: campania.id }">
+    Agregar Jornada
+    </button>
+
+    <button mat-flat-button color="accent" [routerLink]="['/zonas/asociar']" [queryParams]="{ campaniaId: campania.id }">
+    Asociar Zona
+    </button>
+
+    <button mat-flat-button color="accent" [routerLink]="['/encuestadores/asociar']" [queryParams]="{ campaniaId: campania.id }">
+    Agregar Encuestador
+    </button>
+
+
+    <input type="hidden" [(ngModel)]="campania.organizacionSocial.id" name="organizacionSocialId">
+
+    <div class="form-buttons">
+      <button mat-flat-button color="primary" (click)="guardar()">Guardar cambios</button>
+      <button mat-button color="warn" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+</div>
