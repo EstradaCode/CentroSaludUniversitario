@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CampaniaService {
-  private apiUrl = 'http://localhost:8080/api/campanias';
+  private apiUrl = 'http://localhost:8080/csu/api/campanias';
 
   constructor(private http: HttpClient) {}
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { MaterialModule } from './material.module';
 
 
@@ -7,7 +7,7 @@ import { MaterialModule } from './material.module';
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet, MaterialModule],
+  imports: [RouterOutlet, RouterModule, MaterialModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
