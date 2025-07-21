@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EncuestadorEditar } from './encuestador-editar.component';
+import { EncuestadorEditarComponent } from './encuestador-editar.component';
 
 describe('EncuestadorEditar', () => {
-  let component: EncuestadorEditar;
-  let fixture: ComponentFixture<EncuestadorEditar>;
+  let component: EncuestadorEditarComponent;
+  let fixture: ComponentFixture<EncuestadorEditarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EncuestadorEditar]
+      imports: [EncuestadorEditarComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EncuestadorEditar);
+    fixture = TestBed.createComponent(EncuestadorEditarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

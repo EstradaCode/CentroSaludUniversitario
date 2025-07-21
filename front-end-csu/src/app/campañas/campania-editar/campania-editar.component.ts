@@ -28,7 +28,10 @@ export class CampaniaEditarComponent implements OnInit {
     rutaArchivoEncuesta: '',
     fechaInicio: '',
     fechaFin: '',
-    organizacionSocial: { id: 1 } // temporal por ahora
+    organizacionSocial: { id: 1 },
+    zona: [],
+    jornadas: [],
+    encuestadores: []
   };
 
   constructor(
@@ -56,5 +59,22 @@ export class CampaniaEditarComponent implements OnInit {
   cancelar(): void {
     this.router.navigate(['/campanias']);
   }
-}
 
+  irAgregarBarrio(): void {
+    this.router.navigate(['/barrios/asociar'], {
+      queryParams: { campaniaId: this.campania.id }
+    });
+  }
+
+  irAgregarEncuestador(): void {
+    this.router.navigate(['/encuestadores/nuevo'], {
+      queryParams: { campaniaId: this.campania.id }
+    });
+  }
+
+  irAgregarJornada(): void {
+    this.router.navigate(['/jornadas/nueva'], {
+      queryParams: { campaniaId: this.campania.id }
+    });
+  }
+}

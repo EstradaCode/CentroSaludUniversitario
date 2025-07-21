@@ -22,7 +22,13 @@
 
   <!-- Por ahora hardcodeamos org. social -->
   <input type="hidden" [(ngModel)]="campania.organizacionSocial.id" name="orgId">
+    <div *ngIf="fechasInvalidas" style="color: red; margin-bottom: 1rem;">
+    ⚠️ La fecha de fin debe ser posterior a la de inicio.
+  </div>
 
-  <button mat-flat-button color="primary" type="submit">Guardar</button>
+  <button mat-flat-button color="primary" type="submit" [disabled]="fechasInvalidas">
+  Guardar
+</button>
+
   <button mat-button [routerLink]="['/campanias']">Cancelar</button>
 </form>

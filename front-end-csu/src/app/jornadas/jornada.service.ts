@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class JornadaService {
-  private apiUrl = 'http://localhost:8080/api/jornadas';
+  private apiUrl = 'http://localhost:8080/csu/api/jornadas';
 
   constructor(private http: HttpClient) {}
 

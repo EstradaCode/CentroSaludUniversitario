@@ -31,13 +31,16 @@ import { RouterModule } from '@angular/router';
     MatCardModule], // Angular Material, FormsModule, etc.
 })
 export class CampaniaFormularioComponent implements OnInit {
-  campania: Campania = {
-    nombre: '',
-    rutaArchivoEncuesta: '',
-    fechaInicio: '',
-    fechaFin: '',
-    organizacionSocial: { id: 1 }, // placeholder
-  };
+ campania: Campania = {
+  nombre: '',
+  rutaArchivoEncuesta: '',
+  fechaInicio: '',
+  fechaFin: '',
+  organizacionSocial: { id: 1 }, // por ahora hardcoded
+  zona: [],
+  jornadas: [],
+  encuestadores: [],
+};
 
   modoEdicion = false;
 
@@ -59,6 +62,18 @@ export class CampaniaFormularioComponent implements OnInit {
       state: { returnTo: '/campanias/nueva', jornadaActual: null }
     });
   }
+  get fechasInvalidas(): boolean {
+  if (!this.campania.fechaInicio || !this.campania.fechaFin) {
+    return false; // no hay fechas cargadas aún, no se invalida
+  }
+
+  const inicio = new Date(this.campania.fechaInicio);
+  const fin = new Date(this.campania.fechaFin);
+
+  return fin < inicio;
+}
+
+
   guardar(): void {
     const obs = this.modoEdicion
       ? this.service.actualizar(this.campania)
