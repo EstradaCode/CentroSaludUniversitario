@@ -1,30 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UsuarioService } from '../usuario.service';
 import { Usuario } from '../usuario.model';
+
+// Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-usuario-editar',
   standalone: true,
   templateUrl: './usuario-editar.html',
-  styleUrls: ['./usuario-editar.scss'],
+  styleUrl: './usuario-editar.scss',
   imports: [
-  CommonModule,
-  FormsModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatButtonModule,
-  MatSelectModule,
-  MatOptionModule,
-  RouterModule
-],
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatCardModule
+  ]
 })
 export class UsuarioEditarComponent implements OnInit {
   usuario: Usuario = {
@@ -37,32 +42,44 @@ export class UsuarioEditarComponent implements OnInit {
     matricula: 0,
     password: '',
     rol: 'VISITANTE',
-    enabled: false,
+    enabled: false
   };
 
+  usuarioCargado = false;
+
   constructor(
-    private route: ActivatedRoute,
+    private usuarioService: UsuarioService,
     private router: Router,
-    private usuarioService: UsuarioService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.usuarioService.obtener(+id).subscribe((data) => {
+      this.usuarioService.obtener(+id).subscribe(data => {
         this.usuario = data;
+        this.usuarioCargado = true; // Se activa cuando se termina de cargar
       });
     }
   }
 
   guardar(): void {
+    if (!this.usuario.username || !this.usuario.password) {
+      alert('Username y contraseña son obligatorios.');
+      return;
+    }
+
     this.usuarioService.actualizar(this.usuario).subscribe(() => {
       alert('Usuario actualizado con éxito.');
       this.router.navigate(['/usuarios']);
     });
   }
+
   cancelar(): void {
-  this.router.navigate(['/usuarios']);
+    this.router.navigate(['/usuarios']);
+  }
 }
-}
+
+
+
 

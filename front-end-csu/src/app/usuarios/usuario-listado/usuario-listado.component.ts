@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Usuario } from '../usuario.model';
 import { UsuarioService } from '../usuario.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { MaterialModule } from '../../material.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,16 +12,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { filter } from 'rxjs/operators';
+
 @Component({
   selector: 'app-usuario-listado',
   standalone: true,
-  imports: [CommonModule,RouterModule,MatSidenavModule,
-  MatToolbarModule,
-  MatListModule,
-  MatButtonModule,
-  MatInputModule,
-  MatTableModule,FormsModule,
-  MatFormFieldModule,MaterialModule], 
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatButtonModule,
+    MatInputModule,
+    MatTableModule,
+    FormsModule,
+    MatFormFieldModule,
+    MaterialModule
+  ],
   templateUrl: './usuario-listado.html',
 })
 export class UsuarioListadoComponent implements OnInit {
@@ -30,20 +38,29 @@ export class UsuarioListadoComponent implements OnInit {
   filtro: string = '';
   usuarioEnEdicion: Usuario | null = null;
 
-  constructor(private usuarioService: UsuarioService) {}
-ngOnInit(): void {
-  this.obtenerUsuarios();
-}
+  constructor(
+    private usuarioService: UsuarioService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-obtenerUsuarios(): void {
-  this.usuarioService.listar().subscribe(data => {
-    setTimeout(() => {
+  ngOnInit(): void {
+    this.obtenerUsuarios();
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.obtenerUsuarios();
+      });
+  }
+
+  obtenerUsuarios(): void {
+    this.usuarioService.listar().subscribe(data => {
       this.usuarios = data;
-      this.usuariosFiltrados = data;
+      this.aplicarFiltro();
+      this.cdr.detectChanges(); // 🧠 fuerza la actualización visual
     });
-  });
-}
-
+  }
 
   aplicarFiltro(): void {
     const filtroLower = this.filtro.toLowerCase();
@@ -57,7 +74,8 @@ obtenerUsuarios(): void {
     if (confirm('¿Estás seguro que querés eliminar este usuario?')) {
       this.usuarioService.eliminar(id).subscribe(() => {
         this.usuarios = this.usuarios.filter(u => u.id !== id);
-        this.aplicarFiltro(); // Reaplicamos el filtro
+        this.aplicarFiltro();
+        this.cdr.detectChanges();
       });
     }
   }

@@ -44,13 +44,23 @@ export class JornadaFormularioComponent implements OnInit {
   }
 
   guardar(): void {
+    if (!this.jornada.fecha || !this.jornada.horaInicio || !this.jornada.horaFin) {
+      alert('Todos los campos son obligatorios.');
+      return;
+    }
+
+    if (this.jornada.horaFin <= this.jornada.horaInicio) {
+      alert('La hora de fin debe ser posterior a la de inicio.');
+      return;
+    }
+
     this.jornadaService.crear(this.jornada).subscribe(() => {
-      alert('Jornada creada');
-      this.router.navigate(['/campanias']); // o a donde decidas volver
+      alert('Jornada creada con éxito.');
+      this.router.navigate(['/campanias/editar', this.jornada.campania.id]);
     });
   }
 
   cancelar(): void {
-    this.router.navigate(['/campanias']);
+    this.router.navigate(['/campanias/editar', this.jornada.campania.id]);
   }
 }
