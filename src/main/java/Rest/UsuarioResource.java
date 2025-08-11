@@ -197,4 +197,5 @@ public class UsuarioResource {
         usuarioService.deshabilitarUsuario(id);
         return Response.ok("Usuario deshabilitado").build();
     }
+
 }

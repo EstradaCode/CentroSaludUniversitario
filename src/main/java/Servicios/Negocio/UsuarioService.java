@@ -1,56 +1,103 @@
 package Servicios.Negocio;
 
+import Dtos.Usuario.CreateUsuarioDTO;
+import Dtos.Usuario.DetailUsuarioDTO;
+import Dtos.Usuario.ListUsuarioDTO;
+import Dtos.Usuario.PageResponse;
+import Modelo.Roles;
 import Modelo.Usuario;
 import Persistencia.UsuarioDao;
 import Persistencia.UsuarioDaoImpl;
+import Utils.mappers.UsuarioMapper;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
 
 import java.util.List;
 @RequestScoped
-public class UsuarioService {
+public class UsuarioService implements IUsuarioService {
+
     @Inject
-    private UsuarioDao usuarioDao;
+    UsuarioDao usuarioDao;
 
-    public void crearUsuario(Usuario usuario) {
-        usuarioDao.save(usuario);
+    @Override
+    public PageResponse<ListUsuarioDTO> listar(int page, int size, String sort, String q) {
+        if (size <= 0) size = 20;
+        if (size > 100) size = 100;
+        if (page < 0) page = 0;
+        int offset = page * size;
+
+        // DAO devuelve ENTIDADES
+        List<Usuario> usuarios = usuarioDao.findPage(sort, q, offset, size);
+        long total = usuarioDao.count(q);
+
+        // El Service mapea a DTOs
+        List<ListUsuarioDTO> content = usuarios.stream()
+                .map(UsuarioMapper::toListDTO)
+                .toList();
+
+        return new PageResponse<>(content, total, page, size);
     }
 
-    public Usuario buscarUsuarioPorId(Long id) {
-        return usuarioDao.findById(id);
+    @Override
+    public DetailUsuarioDTO obtener(Long id) {
+        Usuario u = usuarioDao.findById(id);
+        return (u == null) ? null : UsuarioMapper.toDetailDTO(u);
     }
 
-    public List<Usuario> listarUsuarios() {
-        return usuarioDao.findAll();
+    @Override
+    @Transactional
+    public Long crear(CreateUsuarioDTO dto) {
+        // Validaciones de unicidad básicas (recomendado mapear a 409 con ExceptionMapper)
+        if (usuarioDao.existsByEmail(dto.getEmail())) {
+            throw new BadRequestException("El email ya está registrado");
+        }
+        if (usuarioDao.existsByUsername(dto.getUsername())) {
+            throw new BadRequestException("El username ya está registrado");
+        }
+
+        Usuario u = UsuarioMapper.fromCreateDTO(dto);
+        // Defaults seguros (si tu mapper no lo setea):
+        if (u.getRol() == null) u.setRol(Roles.VISITANTE);
+        if (u.isEnabled() == null) u.setEnabled(false);
+        // Hash de password si no lo hace el mapper
+       /* if (u.getPassword() != null && !u.getPassword().startsWith("$2a$")) {
+            u.setPassword(BCrypt.hashpw(u.getPassword(), BCrypt.gensalt()));
+        } */
+
+        usuarioDao.save(u);
+        return u.getId();
     }
 
-    public void actualizarUsuario(Usuario usuario) {
-        usuarioDao.update(usuario);
-    }
+    @Override
+    @Transactional
+    public boolean actualizar(Long id, UsuarioUpdateDTO dto) {
+        Usuario u = usuarioDao.findById(id);
+        if (u == null) return false;
 
-    public void eliminarUsuario(Long id) {
-        usuarioDao.deleteById(id);
-    }
+        // Si se cambia el email/username, validá unicidad
+        if (dto.getEmail() != null && !dto.getEmail().equalsIgnoreCase(u.getEmail())
+                && usuarioDao.existsByEmail(dto.getEmail())) {
+            throw new BadRequestException("El email ya está registrado");
+        }
+        if (dto.getUsername() != null && !dto.getUsername().equalsIgnoreCase(u.getUsername())
+                && usuarioDao.existsByUsername(dto.getUsername())) {
+            throw new BadRequestException("El username ya está registrado");
+        }
 
-    public Usuario buscarPorUsername(String username) {
-        return usuarioDao.findByUsername(username);
-    }
+        UsuarioMapper.mergeUpdate(dto, u);
 
-    public Usuario buscarPorEmail(String email) {
-        return usuarioDao.findByEmail(email);
-    }
+        // Si aceptás password en UpdateDTO (opcional, writeOnly)
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            if (dto.getPassword().length() < 8) {
+                throw new BadRequestException("La contraseña debe tener al menos 8 caracteres");
+            }
+            u.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
+        }
 
-    public Usuario buscarPorDni(Long dni) {
-        return usuarioDao.findByDni(dni);
+        usuarioDao.update(u);
+        return true;
     }
-    public void habilitarUsuario(Long id) {
-        usuarioDao.habilitarUsuario(id);
-    }
-
-    public void deshabilitarUsuario(Long id) {
-        usuarioDao.deshabilitarUsuario(id);
-    }
-
-}
 

@@ -6,12 +6,6 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-enum Roles {
-    ADMIN,
-    SALUD,
-    VISITANTE
-}
-
 @Schema(description = "Usuario del sistema con credenciales, rol y datos personales.")
 @Entity
 public class Usuario extends Persona {

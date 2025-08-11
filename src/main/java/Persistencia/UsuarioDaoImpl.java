@@ -107,5 +107,39 @@ public class UsuarioDaoImpl implements UsuarioDao {
         }
         em.getTransaction().commit();
     }
+    public List<Usuario> findPage(String sort, String q, int offset, int size) {
+        String like = "%" + (q == null ? "" : q).toLowerCase() + "%";
+        String[] s = (sort == null ? "id,asc" : sort).split(",");
+        String orderBy = s.length > 0 ? s[0] : "id";
+        String dir = (s.length > 1 && "desc".equalsIgnoreCase(s[1])) ? "DESC" : "ASC";
+
+        String jpql =
+                "SELECT u FROM Usuario u " +
+                        "WHERE (:q = '' OR LOWER(u.username) LIKE :like OR LOWER(u.email) LIKE :like " +
+                        "       OR LOWER(u.nombre) LIKE :like OR LOWER(u.apellido) LIKE :like) " +
+                        "ORDER BY u." + orderBy + " " + dir;
+
+        return em.createQuery(jpql, Usuario.class)
+                .setParameter("q", q == null ? "" : q)
+                .setParameter("like", like)
+                .setFirstResult(offset)
+                .setMaxResults(size)
+                .getResultList();
+    }
+    @Override
+    public long count(String q) {
+        String like = "%" + (q == null ? "" : q).toLowerCase() + "%";
+
+        return em.createQuery(
+                        "SELECT COUNT(u) FROM Usuario u " +
+                                "WHERE (:q = '' OR LOWER(u.username) LIKE :like OR LOWER(u.email) LIKE :like " +
+                                "       OR LOWER(u.nombre) LIKE :like OR LOWER(u.apellido) LIKE :like)",
+                        Long.class
+                )
+                .setParameter("q", q == null ? "" : q)
+                .setParameter("like", like)
+                .getSingleResult();
+    }
+
 }
 
