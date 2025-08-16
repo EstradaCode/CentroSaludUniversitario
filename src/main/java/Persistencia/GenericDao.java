@@ -1,23 +1,15 @@
 package Persistencia;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface GenericDao<T> {
-    // Crear
+public interface GenericDao<T, ID> {
     void save(T entity);
-
-    // Leer por Id
-    T findById(Long id);
-
-    // Leer todos
+    Optional<T> findById(ID id);
     List<T> findAll();
-
-    // Actualizar elems
     void update(T entity);
-
-    // Eliminar por entidad
     void delete(T entity);
-
-    // Eliminar por Id
-    void deleteById(Long id);
+    void deleteById(ID id);
+    boolean existsById(ID id);
 }
+
