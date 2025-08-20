@@ -1,103 +1,125 @@
 package Servicios.Negocio;
 
-import Dtos.Usuario.CreateUsuarioDTO;
-import Dtos.Usuario.DetailUsuarioDTO;
-import Dtos.Usuario.ListUsuarioDTO;
-import Dtos.Usuario.PageResponse;
+import Dtos.Usuario.*;
 import Modelo.Roles;
 import Modelo.Usuario;
 import Persistencia.UsuarioDao;
-import Persistencia.UsuarioDaoImpl;
 import Utils.mappers.UsuarioMapper;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.WebApplicationException;
 
 import java.util.List;
+import java.util.Optional;
+
 @RequestScoped
 public class UsuarioService implements IUsuarioService {
 
-    @Inject
-    UsuarioDao usuarioDao;
+    @Inject UsuarioDao usuarioDao;
+    //@Inject PasswordService passwordService; // Argon2 o bcrypt
 
     @Override
     public PageResponse<ListUsuarioDTO> listar(int page, int size, String sort, String q) {
         if (size <= 0) size = 20;
         if (size > 100) size = 100;
         if (page < 0) page = 0;
+
         int offset = page * size;
 
-        // DAO devuelve ENTIDADES
-        List<Usuario> usuarios = usuarioDao.findPage(sort, q, offset, size);
+        // ✅ Proyección directa desde el DAO (más performante)
+        List<ListUsuarioDTO> content = usuarioDao.findPageToListDTO(sort, q, offset, size);
         long total = usuarioDao.count(q);
-
-        // El Service mapea a DTOs
-        List<ListUsuarioDTO> content = usuarios.stream()
-                .map(UsuarioMapper::toListDTO)
-                .toList();
 
         return new PageResponse<>(content, total, page, size);
     }
 
     @Override
     public DetailUsuarioDTO obtener(Long id) {
-        Usuario u = usuarioDao.findById(id);
-        return (u == null) ? null : UsuarioMapper.toDetailDTO(u);
+        Usuario u = usuarioDao.findById(id)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+        return UsuarioMapper.toDetailDTO(u);
     }
 
     @Override
     @Transactional
     public Long crear(CreateUsuarioDTO dto) {
-        // Validaciones de unicidad básicas (recomendado mapear a 409 con ExceptionMapper)
+        // ✅ Unicidad → 409 Conflict (mejor que 400)
         if (usuarioDao.existsByEmail(dto.getEmail())) {
-            throw new BadRequestException("El email ya está registrado");
+            throw new WebApplicationException("El email ya está registrado", 409);
         }
         if (usuarioDao.existsByUsername(dto.getUsername())) {
-            throw new BadRequestException("El username ya está registrado");
+            throw new WebApplicationException("El username ya está registrado", 409);
         }
 
         Usuario u = UsuarioMapper.fromCreateDTO(dto);
-        // Defaults seguros (si tu mapper no lo setea):
+
+        // Defaults seguros
         if (u.getRol() == null) u.setRol(Roles.VISITANTE);
-        if (u.isEnabled() == null) u.setEnabled(false);
-        // Hash de password si no lo hace el mapper
-       /* if (u.getPassword() != null && !u.getPassword().startsWith("$2a$")) {
-            u.setPassword(BCrypt.hashpw(u.getPassword(), BCrypt.gensalt()));
-        } */
+        if (u.getEnabled() == null) u.setEnabled(false);
+
+        // ✅ Hash SIEMPRE acá (no aceptar hashes del cliente)
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new BadRequestException("Password requerido");
+        }
+        //u.setPassword(passwordService.hash(dto.getPassword().toCharArray()));
 
         usuarioDao.save(u);
         return u.getId();
     }
 
-    @Override
     @Transactional
-    public boolean actualizar(Long id, UsuarioUpdateDTO dto) {
-        Usuario u = usuarioDao.findById(id);
-        if (u == null) return false;
+    @Override
+    public void actualizar(Long id, UpdateUsuarioDTO dto) {
+        Usuario u = usuarioDao.findById(id)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
 
-        // Si se cambia el email/username, validá unicidad
+        // Unicidad si cambian email/username
         if (dto.getEmail() != null && !dto.getEmail().equalsIgnoreCase(u.getEmail())
                 && usuarioDao.existsByEmail(dto.getEmail())) {
-            throw new BadRequestException("El email ya está registrado");
+            throw new WebApplicationException("El email ya está registrado", 409);
         }
         if (dto.getUsername() != null && !dto.getUsername().equalsIgnoreCase(u.getUsername())
                 && usuarioDao.existsByUsername(dto.getUsername())) {
-            throw new BadRequestException("El username ya está registrado");
+            throw new WebApplicationException("El username ya está registrado", 409);
         }
 
-        UsuarioMapper.mergeUpdate(dto, u);
+        UsuarioMapper.updateEntityFromDTO(dto, u);
 
-        // Si aceptás password en UpdateDTO (opcional, writeOnly)
+        // Password opcional: si viene, validar + hash
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             if (dto.getPassword().length() < 8) {
                 throw new BadRequestException("La contraseña debe tener al menos 8 caracteres");
             }
-            u.setPassword(BCrypt.hashpw(dto.getPassword(), BCrypt.gensalt()));
+            //u.setPassword(passwordService.hash(dto.getPassword().toCharArray()));
         }
 
         usuarioDao.update(u);
+    }
+
+    @Override
+    @Transactional
+    public void eliminar(Long id) {
+        // Podés hacerlo idempotente: deleteById sin check, o lanzar 404 si no existe
+        if (!usuarioDao.existsById(id)) {
+            throw new NotFoundException("Usuario no encontrado");
+        }
+        usuarioDao.deleteById(id);
+    }
+
+    // ---- soporte login ----
+    @Override
+    public Optional<Usuario> buscarPorEmailOUsername(String identity) {
+        return usuarioDao.findByIdentity(identity);
+    }
+
+    @Override
+    public boolean verificarPassword(Usuario u, char[] raw) {
+        //return passwordService.verify(u.getPassword(), raw);
         return true;
     }
+}
+
 
