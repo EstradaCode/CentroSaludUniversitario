@@ -4,7 +4,7 @@ import Modelo.Jornada;
 
 import java.util.List;
 
-public interface JornadaDao extends GenericDao<Jornada> {
+public interface JornadaDao extends GenericDao<Jornada,Long> {
 
 
     /**

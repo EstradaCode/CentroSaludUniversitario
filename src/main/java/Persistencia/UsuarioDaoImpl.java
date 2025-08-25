@@ -1,6 +1,6 @@
 package Persistencia;
 
-import Dtos.Usuario.ListUsuarioDTO;
+import Dtos.Usuario.ListUsuarioResponseDTO;
 import Modelo.Usuario;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -120,7 +120,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
     }
 
     @Override
-    public List<ListUsuarioDTO> findPageToListDTO(String sort, String q, int offset, int size) {
+    public List<ListUsuarioResponseDTO> findPageToListDTO(String sort, String q, int offset, int size) {
         // Sanitizá 'sort' contra SQL injection (whitelist de columnas)
         String orderBy = switch (sort) {
             case "username" -> "u.username";
@@ -140,7 +140,7 @@ public class UsuarioDaoImpl implements UsuarioDao {
           ORDER BY %s
         """.formatted(orderBy);
 
-        return em.createQuery(base, ListUsuarioDTO.class)
+        return em.createQuery(base, ListUsuarioResponseDTO.class)
                 .setParameter("q", q)
                 .setFirstResult(offset)
                 .setMaxResults(size)

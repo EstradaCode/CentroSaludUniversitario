@@ -6,7 +6,7 @@ import java.util.List;
 
 import java.util.Date;
 
-public interface EncuestaDao extends GenericDao<Encuesta> {
+public interface EncuestaDao extends GenericDao<Encuesta, Long> {
 
     /**
      * Guardar todas las encuestas.

@@ -1,201 +1,98 @@
 package Rest;
 
-import Modelo.Usuario;
-import Servicios.Negocio.UsuarioService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import Dtos.Usuario.*;
+import Servicios.Negocio.IUsuarioService;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-
-import java.util.List;
+import jakarta.ws.rs.core.*;
 
 @Path("/usuarios")
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Tag(name = "Usuarios", description = "Operaciones CRUD sobre usuarios del sistema")
 public class UsuarioResource {
 
+    // CAMBIO: inyectamos la interfaz, no la implementación concreta
     @Inject
-    private UsuarioService usuarioService;
+    IUsuarioService usuarioService;
 
+    @Context
+    UriInfo uriInfo;
+
+    // CAMBIO: ahora devolvemos PageResponse<ListUsuarioResponseDTO>
     @GET
-    @Operation(
-            summary = "Listar todos los usuarios",
-            description = "Devuelve la lista completa de usuarios registrados.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente")
-            }
-    )
-    public List<Usuario> listar() {
-        return usuarioService.listarUsuarios();
+    @io.swagger.v3.oas.annotations.Operation(summary = "Listar usuarios (paginado)")
+    public PageResponse<ListUsuarioResponseDTO> listar(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("size") @DefaultValue("20") int size,
+            @QueryParam("sort") @DefaultValue("id") String sort,
+            @QueryParam("q") String q
+    ) {
+        return usuarioService.listar(page, size, sort, q);
     }
 
+    // CAMBIO: devolvemos DTO de detalle
     @GET
     @Path("/{id}")
-    @Operation(
-            summary = "Obtener usuario por ID",
-            description = "Busca un usuario específico por su ID.",
-            parameters = @Parameter(name = "id", description = "ID del usuario", required = true),
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
-                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-            }
-    )
-    public Response obtenerPorId(@PathParam("id") Long id) {
-        Usuario usuario = usuarioService.buscarUsuarioPorId(id);
-        if (usuario != null) {
-            return Response.ok(usuario).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Usuario no encontrado con id " + id)
-                    .build();
-        }
+    @io.swagger.v3.oas.annotations.Operation(summary = "Obtener usuario por ID")
+    public DetailUsuarioResponseDTO obtener(@PathParam("id") Long id) {
+        return usuarioService.obtener(id);
     }
 
+    // CAMBIO: recibimos DTO de entrada (request), no entidad
+    // CAMBIO: devolvemos 201 + Location + body {id}
     @POST
-    @Operation(
-            summary = "Crear nuevo usuario",
-            description = "Crea un nuevo usuario con los datos proporcionados.",
-            requestBody = @RequestBody(
-                    required = true,
-                    description = "Datos del nuevo usuario",
-                    content = @Content(
-                            mediaType = "application/json",
-                            examples = @ExampleObject(
-                                    name = "Ejemplo usuario",
-                                    value = """
-                        {
-                          "nombre": "Ludmila",
-                          "apellido": "Pérez",
-                          "dni": 12345678,
-                          "telefono": 1122334455,
-                          "username": "ludmi123",
-                          "password": "secreta",
-                          "email": "ludmi@example.com",
-                          "rol": "SALUD",
-                          "matricula": 98765
-                        }
-                        """
-                            )
-                    )
-            ),
-            responses = {
-                    @ApiResponse(responseCode = "201", description = "Usuario creado correctamente")
-            }
-    )
-    public Response crear(Usuario usuario) {
-        usuarioService.crearUsuario(usuario);
-        return Response.status(Response.Status.CREATED).build();
+    @io.swagger.v3.oas.annotations.Operation(summary = "Crear usuario")
+    public Response crear(@Valid CreateUsuarioRequestDTO dto) {
+        Long id = usuarioService.crear(dto);
+        UriBuilder b = uriInfo.getAbsolutePathBuilder().path(String.valueOf(id));
+        return Response.created(b.build()).entity(java.util.Map.of("id", id)).build();
     }
 
+    // CAMBIO: recibimos DTO de actualización parcial y devolvemos 204
     @PUT
     @Path("/{id}")
-    @Operation(
-            summary = "Actualizar un usuario",
-            description = "Modifica los datos de un usuario existente.",
-            parameters = @Parameter(name = "id", description = "ID del usuario a actualizar", required = true),
-            requestBody = @RequestBody(
-                    required = true,
-                    description = "Datos nuevos del usuario",
-                    content = @Content(
-                            mediaType = "application/json",
-                            examples = @ExampleObject(
-                                    name = "Ejemplo actualización",
-                                    value = """
-                        {
-                          "nombre": "Ludmila",
-                          "apellido": "Pérez",
-                          "dni": 12345678,
-                          "telefono": 1122334455,
-                          "username": "ludmi_actualizada",
-                          "password": "nuevaClave123",
-                          "email": "ludmi_new@example.com",
-                          "rol": "ADMIN",
-                          "matricula": 12345
-                        }
-                        """
-                            )
-                    )
-            ),
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuario actualizado"),
-                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-            }
-    )
-    public Response actualizar(@PathParam("id") Long id, Usuario usuario) {
-        usuario.setId(id);
-        usuarioService.actualizarUsuario(usuario);
-        return Response.ok().build();
+    @io.swagger.v3.oas.annotations.Operation(summary = "Actualizar usuario")
+    public Response actualizar(@PathParam("id") Long id, @Valid UpdateUsuarioRequestDTO dto) {
+        usuarioService.actualizar(id, dto);
+        return Response.noContent().build(); // 204
     }
 
+    // CAMBIO: 204 No Content si elimina OK
     @DELETE
     @Path("/{id}")
-    @Operation(
-            summary = "Eliminar un usuario",
-            description = "Elimina un usuario según su ID.",
-            parameters = @Parameter(name = "id", description = "ID del usuario", required = true),
-            responses = {
-                    @ApiResponse(responseCode = "204", description = "Usuario eliminado"),
-                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-            }
-    )
+    @io.swagger.v3.oas.annotations.Operation(summary = "Eliminar usuario")
     public Response eliminar(@PathParam("id") Long id) {
-        usuarioService.eliminarUsuario(id);
-        return Response.noContent().build();
+        usuarioService.eliminar(id);
+        return Response.noContent().build(); // 204
     }
 
+    // CAMBIO: reutilizamos el service de actualizar con enabled=true
     @PUT
     @Path("/{id}/habilitar")
-    @Operation(
-            summary = "Habilitar un usuario",
-            description = "Marca al usuario como habilitado (enabled=true).",
-            parameters = @Parameter(name = "id", description = "ID del usuario a habilitar", required = true),
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuario habilitado"),
-                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-            }
-    )
-    public Response habilitarUsuario(@PathParam("id") Long id) {
-        Usuario usuario = usuarioService.buscarUsuarioPorId(id);
-        if (usuario == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Usuario no encontrado con id " + id)
-                    .build();
-        }
-        usuarioService.habilitarUsuario(id);
-        return Response.ok("Usuario habilitado").build();
+    @io.swagger.v3.oas.annotations.Operation(summary = "Habilitar usuario")
+    public Response habilitar(@PathParam("id") Long id) {
+        // Record con todos los campos → pasamos null salvo enabled=true
+        UpdateUsuarioRequestDTO dto = new UpdateUsuarioRequestDTO(
+                null, null, null, null, null, null, Boolean.TRUE, null, null, null
+        );
+        usuarioService.actualizar(id, dto);
+        return Response.noContent().build(); // 204
     }
 
+    // CAMBIO: reutilizamos el service de actualizar con enabled=false
     @PUT
     @Path("/{id}/deshabilitar")
-    @Operation(
-            summary = "Deshabilitar un usuario",
-            description = "Marca al usuario como deshabilitado (enabled=false).",
-            parameters = @Parameter(name = "id", description = "ID del usuario a deshabilitar", required = true),
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuario deshabilitado"),
-                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-            }
-    )
-    public Response deshabilitarUsuario(@PathParam("id") Long id) {
-        Usuario usuario = usuarioService.buscarUsuarioPorId(id);
-        if (usuario == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Usuario no encontrado con id " + id)
-                    .build();
-        }
-        usuarioService.deshabilitarUsuario(id);
-        return Response.ok("Usuario deshabilitado").build();
+    @io.swagger.v3.oas.annotations.Operation(summary = "Deshabilitar usuario")
+    public Response deshabilitar(@PathParam("id") Long id) {
+        UpdateUsuarioRequestDTO dto = new UpdateUsuarioRequestDTO(
+                null, null, null, null, null, null, Boolean.FALSE, null, null, null
+        );
+        usuarioService.actualizar(id, dto);
+        return Response.noContent().build(); // 204
     }
-
 }
+

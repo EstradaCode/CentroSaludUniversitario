@@ -1,6 +1,5 @@
 package Servicios.Negocio;
 
-import Dtos.*;
 import Dtos.Usuario.*;
 import Modelo.Usuario;
 import jakarta.transaction.Transactional;
@@ -8,13 +7,11 @@ import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 public interface IUsuarioService {
-    PageResponse<ListUsuarioDTO> listar(int page, int size, String sort, String q);
-    DetailUsuarioDTO obtener(Long id);                 // lanza 404 si no existe
-    Long crear(CreateUsuarioDTO dto);                  // lanza 409 si duplica
-    void actualizar(Long id, UpdateUsuarioDTO dto);   // 404 si no existe, 409 si duplica
-
+    PageResponse<ListUsuarioResponseDTO> listar(int page, int size, String sort, String q);
+    DetailUsuarioResponseDTO obtener(Long id);                 // lanza 404 si no existe
+    Long crear(CreateUsuarioRequestDTO dto);                  // lanza 409 si duplica
     @Transactional
-    void actualizar(Long id, UsuarioUpdateDTO dto);
+    void actualizar(Long id, UpdateUsuarioRequestDTO dto);
 
     void eliminar(Long id);                            // idempotente o 404, a elección
 

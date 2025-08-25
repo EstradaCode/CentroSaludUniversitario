@@ -1,66 +1,61 @@
 package Utils.mappers;
 
-import Dtos.Usuario.CreateUsuarioDTO;
-import Dtos.Usuario.DetailUsuarioDTO;
-import Dtos.Usuario.ListUsuarioDTO;
-import Dtos.Usuario.UpdateUsuarioDTO;
+import Dtos.Usuario.CreateUsuarioRequestDTO;
+
+import Dtos.Usuario.DetailUsuarioResponseDTO;
+
+import Dtos.Usuario.ListUsuarioResponseDTO;
+import Dtos.Usuario.UpdateUsuarioRequestDTO;
 import Modelo.Roles;
 import Modelo.Usuario;
 
-public class UsuarioMapper {
+public final class UsuarioMapper {
+    private UsuarioMapper() {}
 
-    public static ListUsuarioDTO toListDTO(Usuario usuario) {
-        ListUsuarioDTO dto = new ListUsuarioDTO();
-        dto.setId(usuario.getId());
-        dto.setUsername(usuario.getUsername());
-        dto.setEmail(usuario.getEmail());
-        dto.setEnabled(usuario.isEnabled());
-        dto.setRol(usuario.getRol().toString());
-        return dto;
+    // Request -> Entity (crear)
+    public static Usuario fromCreate(CreateUsuarioRequestDTO dto) {
+        var u = new Usuario();
+        u.setNombre(dto.nombre());
+        u.setApellido(dto.apellido());
+        u.setDni(dto.dni());
+        u.setTelefono(dto.telefono());
+        u.setUsername(dto.username());
+        u.setEmail(dto.email());
+        u.setRol(Roles.valueOf(dto.rol()));
+        u.setMatricula(dto.matricula());
+        u.setEnabled(Boolean.TRUE); // o FALSE si querés activar por flujo aparte
+        return u; // password hash se setea en el Service
     }
 
-    public static DetailUsuarioDTO toDetailDTO(Usuario usuario) {
-        DetailUsuarioDTO dto = new DetailUsuarioDTO();
-        dto.setId(usuario.getId());
-        dto.setNombre(usuario.getNombre());
-        dto.setApellido(usuario.getApellido());
-        dto.setDni(usuario.getDni());
-        dto.setTelefono(usuario.getTelefono());
-        dto.setUsername(usuario.getUsername());
-        dto.setEmail(usuario.getEmail());
-        dto.setEnabled(usuario.isEnabled());
-        dto.setRol(usuario.getRol().name());
-        dto.setMatricula(usuario.getMatricula());
-        return dto;
+    // Merge parcial (update): NO pises con nulls
+    public static void merge(UpdateUsuarioRequestDTO dto, Usuario u) {
+        if (dto.nombre() != null) u.setNombre(dto.nombre());
+        if (dto.apellido() != null) u.setApellido(dto.apellido());
+        if (dto.dni() != null) u.setDni(dto.dni());
+        if (dto.telefono() != null) u.setTelefono(dto.telefono());
+        if (dto.username() != null) u.setUsername(dto.username());
+        if (dto.email() != null) u.setEmail(dto.email());
+        if (dto.enabled() != null) u.setEnabled(dto.enabled());
+        if (dto.rol() != null) u.setRol(Roles.valueOf(dto.rol()));
+        if (dto.matricula() != null) u.setMatricula(dto.matricula());
+        // password se trata en el Service (hash), no acá
     }
 
-    public static Usuario fromCreateDTO(CreateUsuarioDTO dto) {
-        Usuario usuario = new Usuario();
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setDni(dto.getDni());
-        usuario.setTelefono(dto.getTelefono());
-        usuario.setUsername(dto.getUsername());
-        usuario.setPassword(dto.getPassword());
-        usuario.setEmail(dto.getEmail());
-        usuario.setRol(Roles.valueOf(dto.getRol()));
-        usuario.setMatricula(dto.getMatricula());
-        usuario.setEnabled(true);
-        return usuario;
+    // Entity -> Response (detalle)
+    public static DetailUsuarioResponseDTO toDetail(Usuario u) {
+        return new DetailUsuarioResponseDTO(
+                u.getId(), u.getNombre(), u.getApellido(), u.getDni(), u.getTelefono(),
+                u.getUsername(), u.getEmail(), u.isEnabled(), u.getRol().name(),
+                u.getMatricula()
+        );
     }
 
-    public static void updateEntityFromDTO(UpdateUsuarioDTO dto, Usuario usuario) {
-        usuario.setNombre(dto.getNombre());
-        usuario.setApellido(dto.getApellido());
-        usuario.setDni(dto.getDni());
-        usuario.setTelefono(dto.getTelefono());
-        usuario.setUsername(dto.getUsername());
-        usuario.setEmail(dto.getEmail());
-        usuario.setEnabled(dto.getEnabled());
-        usuario.setRol(Roles.valueOf(dto.getRol()));
-        usuario.setMatricula(dto.getMatricula());
-        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
-            usuario.setPassword(dto.getPassword());
-        }
+    // Entity -> Response (listado)
+    public static ListUsuarioResponseDTO toList(Usuario u) {
+        return new ListUsuarioResponseDTO(
+                u.getId(), u.getUsername(), u.getEmail(),
+                u.isEnabled(), u.getRol().name()
+        );
     }
 }
+

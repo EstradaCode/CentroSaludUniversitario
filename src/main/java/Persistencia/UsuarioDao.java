@@ -1,6 +1,6 @@
 package Persistencia;
 
-import Dtos.Usuario.ListUsuarioDTO;
+import Dtos.Usuario.ListUsuarioResponseDTO;
 import Modelo.Usuario;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface UsuarioDao extends GenericDao <Usuario, Long>{
                 Optional<Usuario> findByIdentity(String identity);
 
                 // Listado performante
-                List<ListUsuarioDTO> findPageToListDTO(String sort, String q, int offset, int size);
+                List<ListUsuarioResponseDTO> findPageToListDTO(String sort, String q, int offset, int size);
                 long count(String q);
 
                 // Habilitar / deshabilitar (update directo)

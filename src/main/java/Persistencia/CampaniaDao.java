@@ -5,11 +5,8 @@ import Modelo.Campania;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface CampaniaDao extends GenericDao<Campania> /* extends GenericDao<Campania> si querés */ {
+public interface CampaniaDao extends GenericDao<Campania,Long> /* extends GenericDao<Campania> si querés */ {
 
-    /**
-     * Find campaigns active within a date range (e.g. campaigns currently ongoing).
-     */
     List<Campania> findActiveCampaigns(LocalDate date);
 
     /**

@@ -4,7 +4,7 @@ import Modelo.OrganizacionSocial;
 
 import java.util.List;
 
-public interface OrganizacionSocialDao extends GenericDao<OrganizacionSocial> {
+public interface OrganizacionSocialDao extends GenericDao<OrganizacionSocial,Long> {
 
     /**
      * Find social organizations by partial name match (LIKE).
