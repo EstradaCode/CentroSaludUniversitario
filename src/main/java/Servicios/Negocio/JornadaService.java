@@ -4,6 +4,7 @@ import Modelo.Encuesta;
 import Modelo.Jornada;
 import Persistencia.JornadaDao;
 
+import Servicios.Implementacion.EncuestaService;
 import jakarta.inject.Inject;
 
 

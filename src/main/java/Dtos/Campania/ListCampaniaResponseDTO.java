@@ -13,6 +13,6 @@ public record ListCampaniaResponseDTO(
             int cantidadJornadas,       // total de jornadas asociadas
             long totalEncuestas,        // suma de encuestas realizadas
             int totalEncuestadores,     // encuestadores asignados
-            String zonaNombre,          // nombre de la zona
+            String BarrioNombre,          // nombre del barrio
             String organizacionNombre   // nombre de la organización
     ) {}

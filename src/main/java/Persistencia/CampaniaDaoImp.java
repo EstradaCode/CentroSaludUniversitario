@@ -1,5 +1,6 @@
 package Persistencia;
 
+import Dtos.Campania.ListCampaniaResponseDTO;
 import Modelo.Campania;
 
 
@@ -31,6 +32,65 @@ public class CampaniaDaoImp implements CampaniaDao {
             if (tx.isActive()) tx.rollback();
             throw ex;
         }
+    }
+
+    // En CampaniaDaoImp
+    public List<ListCampaniaResponseDTO> findPageToListDTO(String sort, String q, int offset, int size) {
+        // whitelist de sort
+        String orderBy = switch (sort) {
+            case "nombre"        -> "c.nombre";
+            case "activa"        -> "c.activa";
+            case "fechaInicio"   -> "c.fechaInicio";
+            case "fechaFin"      -> "c.fechaFin";
+            case "barrioNombre"  -> "b.nombre";
+            case "organizacion"  -> "o.nombre";
+            default              -> "c.fechaInicio DESC";
+        };
+
+        String jpql = """
+      SELECT new com.tu.paquete.dto.ListCampaniaResponseDTO(
+          c.id,
+          c.nombre,
+          c.activa,
+          c.fechaInicio,
+          c.fechaFin,
+          SIZE(c.jornadas),                                                  /* int */
+          (SELECT COUNT(e) FROM Encuesta e WHERE e.jornada.campania.id = c.id), /* long */
+          SIZE(c.encuestadores),                                            /* int */
+          b.nombre,
+          o.nombre
+      )
+      FROM Campania c
+      LEFT JOIN c.barrio b
+      LEFT JOIN c.organizacionSocial o
+      WHERE (:q IS NULL OR :q = '' OR
+             LOWER(c.nombre) LIKE LOWER(CONCAT('%', :q, '%')) OR
+             LOWER(b.nombre) LIKE LOWER(CONCAT('%', :q, '%')) OR
+             LOWER(o.nombre) LIKE LOWER(CONCAT('%', :q, '%')))
+      ORDER BY %s
+    """.formatted(orderBy);
+
+        return em.createQuery(jpql, ListCampaniaResponseDTO.class)
+                .setParameter("q", q)
+                .setFirstResult(offset)
+                .setMaxResults(size)
+                .getResultList();
+    }
+
+    public Long count(String q) {
+        String jpql = """
+      SELECT COUNT(c)
+      FROM Campania c
+      LEFT JOIN c.barrio b
+      LEFT JOIN c.organizacionSocial o
+      WHERE (:q IS NULL OR :q = '' OR
+             LOWER(c.nombre) LIKE LOWER(CONCAT('%', :q, '%')) OR
+             LOWER(b.nombre) LIKE LOWER(CONCAT('%', :q, '%')) OR
+             LOWER(o.nombre) LIKE LOWER(CONCAT('%', :q, '%')))
+    """;
+        return em.createQuery(jpql, Long.class)
+                .setParameter("q", q)
+                .getSingleResult();
     }
 
     @Override

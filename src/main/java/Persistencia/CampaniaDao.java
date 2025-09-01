@@ -1,5 +1,6 @@
 package Persistencia;
 
+import Dtos.Campania.ListCampaniaResponseDTO;
 import Modelo.Campania;
 
 import java.time.LocalDate;
@@ -30,8 +31,9 @@ public interface CampaniaDao extends GenericDao<Campania,Long> /* extends Generi
     List<Campania> findWithSurveyors();
 
     /**
-     * Count total number of campaigns.
+     * Count total number of campaigns with q as name.
      */
-    Long countCampaigns();
+    Long count(String q);
+    List<ListCampaniaResponseDTO> findPageToListDTO(String sort, String q, int offset, int size);
 
 }

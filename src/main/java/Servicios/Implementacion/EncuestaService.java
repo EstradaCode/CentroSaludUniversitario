@@ -1,13 +1,10 @@
-package Servicios.Negocio;
+package Servicios.Implementacion;
 
 import Modelo.Encuesta;
 import Persistencia.EncuestaDao;
-import Persistencia.EncuestaDaoImp;
 import Utils.Enums.AtencionSalud;
 import Utils.Enums.TipoVivienda;
 import jakarta.inject.Inject;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityManager;
 
 import java.util.Date;
 import java.util.List;

@@ -7,9 +7,9 @@ import jakarta.validation.constraints.NotNull;
 // con uno estamos bien.
 public record CreateEncuestadorRequestDTO(
         @NotBlank String nombre,
-        @Email String email,
-        @NotBlank String telefono,
-        @NotNull Long barrioId,
+        //@Email String email,
+        @NotBlank Long telefono,
+        @NotNull String barrioNombre,
         @Min(0) int horasTrabajadas
 ) {
 }

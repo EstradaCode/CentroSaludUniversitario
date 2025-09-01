@@ -1,12 +1,12 @@
 package Persistencia;
 
 import Modelo.Barrio;
-import Modelo.Campania;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Optional;
 
 public class  BarrioDaoImpl implements BarrioDao{
     @Inject
@@ -20,8 +20,8 @@ public class  BarrioDaoImpl implements BarrioDao{
     }
 
     @Override
-    public Barrio findById(Long id) {
-        return em.find(Barrio.class, id);
+    public Optional<Barrio> findById(Long id) {
+        return Optional.ofNullable(em.find(Barrio.class, id));
     }
 
     @Override
@@ -45,10 +45,7 @@ public class  BarrioDaoImpl implements BarrioDao{
 
     @Override
     public void deleteById(Long id) {
-        Barrio b = findById(id);
-        if (b != null) {
-            delete(b);
-        }
+        findById(id).ifPresent(this::delete);
     }
 
     @Override
@@ -63,5 +60,10 @@ public class  BarrioDaoImpl implements BarrioDao{
     public Long countNeighborhoods() {
         String jpql = "SELECT COUNT(b) FROM Barrio b";
         return em.createQuery(jpql, Long.class).getSingleResult();
+    }
+
+    @Override
+    public boolean existsById(Long aLong) {
+        return false;
     }
 }

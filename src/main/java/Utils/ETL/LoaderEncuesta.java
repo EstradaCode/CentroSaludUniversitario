@@ -1,11 +1,8 @@
 package Utils.ETL;
 
 import Modelo.Encuesta;
-import Servicios.Negocio.EncuestaService;
-import Utils.EntityMgmt;
-import jakarta.persistence.EntityManager;
+import Servicios.Implementacion.EncuestaService;
 
-import java.net.URL;
 import java.util.List;
 
 public class LoaderEncuesta implements Loader<List<Encuesta>>{

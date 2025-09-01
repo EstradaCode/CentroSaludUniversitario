@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Entity
 public class Campania {
     @Id
@@ -13,8 +15,10 @@ public class Campania {
     private Long id;
     private String nombre;
     private String rutaArchivoEncuesta; // la idea es que el archivo esté subido en un servicio aparte, para consumirse de forma externa (google cloud, amazon s3, etc)
-    @ManyToMany
-    private List<Barrio> zona;
+    @ManyToOne(fetch = LAZY, optional = false)
+    @JoinColumn(name = "barrio_id", nullable = false)
+    private Barrio barrio;
+    private boolean activa;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     @OneToMany
@@ -24,13 +28,15 @@ public class Campania {
     @ManyToOne
     @JoinColumn(name = "organizacionSocial_id")
     private OrganizacionSocial organizacionSocial;
+    @Version
+    Long version;
 
     public Campania() {
     }
-    public Campania(String nombre, String archivoEncuesta, List<Barrio> zona, LocalDate fechaInicio, LocalDate fechaFin, List<Encuestador> encuestadores, OrganizacionSocial organizacionSocial) {
+    public Campania(String nombre, String archivoEncuesta, Barrio barrio, LocalDate fechaInicio, LocalDate fechaFin, List<Encuestador> encuestadores, OrganizacionSocial organizacionSocial) {
         this.nombre = nombre;
         this.rutaArchivoEncuesta = archivoEncuesta;
-        this.zona = zona;
+        this.barrio = barrio;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.encuestadores = encuestadores;
@@ -42,11 +48,11 @@ public class Campania {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public List<Barrio> getZona() {
-        return zona;
+    public Barrio getBarrio() {
+        return barrio;
     }
-    public void setZona(List<Barrio> zona) {
-        this.zona = zona;
+    public void setBarrio(Barrio barrio) {
+        this.barrio = barrio;
     }
     public LocalDate getFechaInicio() {
         return fechaInicio;
@@ -71,6 +77,21 @@ public class Campania {
     }
     public void setOrganizacionSocial(OrganizacionSocial organizacionSocial) {
         this.organizacionSocial = organizacionSocial;
+    }
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public boolean isActiva() {
+        return activa;
+    }
+
+    public void setActiva(boolean activa) {
+        this.activa = activa;
     }
 
     public List<Jornada> getJornadas() {
