@@ -3,12 +3,15 @@ package Servicios.Negocio;
 import Modelo.Encuesta;
 import Persistencia.EncuestaDao;
 import Persistencia.EncuestaDaoImp;
+import Utils.Enums.AtencionSalud;
+import Utils.Enums.TipoVivienda;
 import jakarta.inject.Inject;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class EncuestaService {
     @Inject
@@ -25,7 +28,7 @@ public class EncuestaService {
     }
 
     // Buscar encuesta por ID
-    public Encuesta obtenerEncuestaPorId(Long id) {
+    public Optional<Encuesta> obtenerEncuestaPorId(Long id) {
         return encuestaDao.findById(id);
     }
 
@@ -55,7 +58,7 @@ public class EncuestaService {
     }
 
     // Buscar encuestas por tipo de vivienda
-    public List<Encuesta> buscarPorTipoVivienda(String tipoVivienda) {
+    public List<Encuesta> buscarPorTipoVivienda(TipoVivienda tipoVivienda) {
         return encuestaDao.findByTipoVivienda(tipoVivienda);
     }
 
@@ -70,7 +73,7 @@ public class EncuestaService {
     }
 
     // Estadísticas - contar encuestas con acceso a salud
-    public Long contarPorAccesoSalud(Boolean accesoSalud) {
+    public Long contarPorAccesoSalud(AtencionSalud accesoSalud) {
         return encuestaDao.countByAccesoSalud(accesoSalud);
     }
 

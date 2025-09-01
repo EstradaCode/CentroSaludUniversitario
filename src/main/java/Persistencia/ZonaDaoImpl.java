@@ -1,7 +1,5 @@
 package Persistencia;
 
-import Modelo.Barrio;
-import Modelo.Usuario;
 import Modelo.Zona;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -9,6 +7,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Optional;
+
 @RequestScoped
 public class ZonaDaoImpl implements ZonaDao{
     @Inject
@@ -21,8 +21,8 @@ public class ZonaDaoImpl implements ZonaDao{
     }
 
     @Override
-    public Zona findById(Long id) {
-        return em.find(Zona.class, id);
+    public Optional<Zona> findById(Long id) {
+        return Optional.ofNullable(em.find(Zona.class, id));
     }
 
     @Override
@@ -54,9 +54,11 @@ public class ZonaDaoImpl implements ZonaDao{
 
     @Override
     public void deleteById(Long id) {
-        Zona entity = findById(id);
-        if (entity != null) {
-            delete(entity);
-        }
+        findById(id).ifPresent(this::delete);
+    }
+
+    @Override
+    public boolean existsById(Long aLong) {
+        return false;
     }
 }

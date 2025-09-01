@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
+import java.util.Optional;
 
 public class EncuestadorDaoImpl implements EncuestadorDao{
     @Inject
@@ -16,8 +17,8 @@ public class EncuestadorDaoImpl implements EncuestadorDao{
         em.getTransaction().commit();
     }
     @Override
-    public Encuestador findById(Long id) {
-        return em.find(Encuestador.class, id);
+    public Optional<Encuestador> findById(Long id) {
+        return Optional.ofNullable(em.find(Encuestador.class, id));
     }
     @Override
     public List<Encuestador> findAll() {
@@ -37,9 +38,11 @@ public class EncuestadorDaoImpl implements EncuestadorDao{
     }
     @Override
     public void deleteById(Long id) {
-        Encuestador entity = findById(id);
-        if (entity != null) {
-            delete(entity);
-        }
+       findById(id).ifPresent(this::delete);
+    }
+
+    @Override
+    public boolean existsById(Long aLong) {
+        return false;
     }
 }

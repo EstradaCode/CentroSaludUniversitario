@@ -11,16 +11,12 @@ public class Barrio {
     private Long id;
     @Column(nullable = false, unique = true)
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "barrio_id")
-    private List<Zona> zonas;
 
 
     public Barrio() {
     }
 
-    public Barrio(List<Zona> zonas, String nombre) {
-        this.zonas = zonas;
+    public Barrio( String nombre) {
         this.nombre = nombre;
     }
     public String getNombre() {
@@ -28,12 +24,6 @@ public class Barrio {
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-    public List<Zona> getZonas() {
-        return zonas;
-    }
-    public void setZonas(List<Zona> zonas) {
-        this.zonas = zonas;
     }
 
     public Long getId() {

@@ -2,6 +2,9 @@ package Persistencia;
 
 
 import Modelo.Encuesta;
+import Utils.Enums.AtencionSalud;
+import Utils.Enums.TipoVivienda;
+
 import java.util.List;
 
 import java.util.Date;
@@ -25,7 +28,7 @@ public interface EncuestaDao extends GenericDao<Encuesta, Long> {
     /**
      * Buscar encuestas por tipo de vivienda.
      */
-    List<Encuesta> findByTipoVivienda(String tipoVivienda);
+    List<Encuesta> findByTipoVivienda(TipoVivienda tipoVivienda);
 
     /**
      * Contar encuestas según acceso a agua.
@@ -40,7 +43,7 @@ public interface EncuestaDao extends GenericDao<Encuesta, Long> {
     /**
      * Contar encuestas según acceso a salud.
      */
-    Long countByAccesoSalud(Boolean accesoSalud);
+    Long countByAccesoSalud(AtencionSalud accesoSalud);
 
     // Si necesitás, podés agregar más métodos específicos según tus filtros y consultas.
 }

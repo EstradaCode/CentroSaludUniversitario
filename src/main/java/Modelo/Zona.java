@@ -3,37 +3,39 @@ package Modelo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Schema(description = "Entidad que representa una zona delimitada dentro de un barrio.")
+@Table(name = "zona",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"barrio_id","nombre"}))
 public class Zona {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(description = "ID único de la zona", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Nombre identificador de la zona", example = "Zona Sur")
+    @Column(nullable = false)
     private String nombre;
 
-    @ElementCollection(targetClass = GeoPoint.class)
-    @Schema(description = "Lista de puntos geográficos que delimitan la zona", implementation = GeoPoint.class)
-    private List<GeoPoint> geoPoint;
-
-    @ManyToOne
-    @JoinColumn(name = "barrio_id")
-    @Schema(description = "Barrio al que pertenece esta zona", implementation = Barrio.class)
-    @JsonbTransient
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "barrio_id", nullable = false)
     private Barrio barrio;
+
+    // Polígono: lista ORDENADA de vértices
+    @ElementCollection
+    @CollectionTable(name = "zona_polygon", joinColumns = @JoinColumn(name = "zona_id"))
+    @OrderColumn(name = "ord") // <── preserva el orden de los puntos
+    private List<GeoPoint> polygon = new ArrayList<>();
 
     public Zona() {
     }
 
-    public Zona(String nombre, List<GeoPoint> geoPoint, Barrio barrio) {
+    public Zona(String nombre, Barrio barrio, List<GeoPoint> polygon) {
+        this.id = id;
         this.nombre = nombre;
-        this.geoPoint = geoPoint;
         this.barrio = barrio;
+        this.polygon = polygon;
     }
 
     public Long getId() {
@@ -52,19 +54,19 @@ public class Zona {
         this.nombre = nombre;
     }
 
-    public List<GeoPoint> getGeoPoint() {
-        return geoPoint;
-    }
-
-    public void setGeoPoint(List<GeoPoint> geoPoint) {
-        this.geoPoint = geoPoint;
-    }
-
     public Barrio getBarrio() {
         return barrio;
     }
 
     public void setBarrio(Barrio barrio) {
         this.barrio = barrio;
+    }
+
+    public List<GeoPoint> getPolygon() {
+        return polygon;
+    }
+
+    public void setPolygon(List<GeoPoint> polygon) {
+        this.polygon = polygon;
     }
 }

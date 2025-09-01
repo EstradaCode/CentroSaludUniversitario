@@ -5,6 +5,8 @@ import jakarta.inject.Inject;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Optional;
+
 import jakarta.persistence.EntityManager;
 
 
@@ -20,8 +22,8 @@ public class JornadaDaoImp implements JornadaDao {
     }
 
     @Override
-    public Jornada findById(Long id) {
-        return em.find(Jornada.class, id);
+    public Optional<Jornada> findById(Long id) {
+        return Optional.ofNullable(em.find(Jornada.class, id));
     }
     @Override
     public List<Jornada> findByDate(String date) {
@@ -53,10 +55,12 @@ public class JornadaDaoImp implements JornadaDao {
 
     @Override
     public void deleteById(Long id) {
-        Jornada jornada = findById(id);
-        if (jornada != null) {
-            delete(jornada);
+        findById(id).ifPresent(this::delete);
         }
+
+    @Override
+    public boolean existsById(Long aLong) {
+        return false;
     }
 }
 

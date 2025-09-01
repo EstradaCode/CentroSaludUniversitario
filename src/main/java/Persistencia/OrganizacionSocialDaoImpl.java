@@ -1,12 +1,12 @@
 package Persistencia;
 
-import Modelo.Campania;
 import Modelo.OrganizacionSocial;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Optional;
 
 public class OrganizacionSocialDaoImpl implements OrganizacionSocialDao {
     @Inject
@@ -19,8 +19,8 @@ public class OrganizacionSocialDaoImpl implements OrganizacionSocialDao {
     }
 
     @Override
-    public OrganizacionSocial findById(Long id) {
-        return em.find(OrganizacionSocial.class, id);
+    public Optional<OrganizacionSocial> findById(Long id) {
+        return Optional.ofNullable(em.find(OrganizacionSocial.class, id));
     }
 
     @Override
@@ -81,6 +81,11 @@ public class OrganizacionSocialDaoImpl implements OrganizacionSocialDao {
         String jpql = "SELECT COUNT(o) FROM OrganizacionSocial o";
         TypedQuery<Long> query = em.createQuery(jpql, Long.class);
         return query.getSingleResult();
+    }
+
+    @Override
+    public boolean existsById(Long aLong) {
+        return false;
     }
 }
 
