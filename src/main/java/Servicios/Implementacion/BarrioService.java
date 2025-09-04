@@ -1,10 +1,9 @@
-package Servicios.Negocio;
+package Servicios.Implementacion;
 
 import Modelo.Barrio;
 import Persistencia.BarrioDao;
-import Persistencia.BarrioDaoImpl;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class BarrioService {
 
 
     public Barrio buscarPorId(Long id) {
-        return barrioDao.findById(id);
+        return barrioDao.findById(id).orElseThrow(() -> new NotFoundException("Barrio no encontrado"));
     }
 
 

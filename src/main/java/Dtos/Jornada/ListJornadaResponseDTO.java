@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 
-public record ListJornadaResponse(
+public record ListJornadaResponseDTO(
         @Schema(description = "ID de la jornada", example = "1") Long id,
         @Schema(description = "Fecha de la jornada", example = "2025-07-15") LocalDate fecha,
         @Schema(description = "Hora de inicio (HH:mm)", example = "09:00") String horaInicio,

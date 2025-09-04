@@ -4,6 +4,7 @@ import Modelo.Zona;
 import Persistencia.ZonaDao;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ZonaService {
         zonaDao.save(zona);
     }
     public Zona buscarZonaPorId(Long id) {
-        return zonaDao.findById(id);
+        return zonaDao.findById(id).orElseThrow(() -> new NotFoundException("Zona no encontrada"));
     }
     public List<Zona> buscarZonasPorNombre(String nombre) {
         return zonaDao.findByNombre(nombre);

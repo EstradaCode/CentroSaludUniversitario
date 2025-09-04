@@ -33,6 +33,7 @@ public interface CampaniaDao extends GenericDao<Campania,Long> /* extends Generi
     /**
      * Count total number of campaigns with q as name.
      */
+    Long countCampaigns();
     Long count(String q);
     List<ListCampaniaResponseDTO> findPageToListDTO(String sort, String q, int offset, int size);
 

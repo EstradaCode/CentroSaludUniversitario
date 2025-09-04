@@ -5,6 +5,7 @@ import Persistencia.OrganizacionSocialDao;
 import Persistencia.OrganizacionSocialDaoImpl;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 //final no es compatible con inject, ya que utiliza la reflexión en runtime, cosa que es contraria a final, donde ya debe estár inicializada o añadida en el constructor.
@@ -17,7 +18,7 @@ public class OrganizacionSocialService {
     }
 
     public OrganizacionSocial buscarPorId(Long id) {
-        return organizacionDao.findById(id);
+        return organizacionDao.findById(id).orElseThrow(()-> new NotFoundException("Organizacion social no encontrada"));
     }
 
     public List<OrganizacionSocial> buscarPorBarrio(Long barrioId) {

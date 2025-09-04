@@ -1,9 +1,10 @@
-package Servicios.Negocio;
+package Servicios.Implementacion;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import Modelo.Encuestador;
 import Persistencia.EncuestadorDao;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ public class EncuestadorService {
     }
 
     public Encuestador buscarEncuestadorPorId(Long id) {
-        return encuestadorDao.findById(id);
+        return encuestadorDao.findById(id)
+                .orElseThrow(() -> new NotFoundException("Encuestador no encontrado"));
     }
 
     public List<Encuestador> listarEncuestadores() {

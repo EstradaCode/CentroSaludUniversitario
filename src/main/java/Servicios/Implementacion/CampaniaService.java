@@ -1,4 +1,4 @@
-package Servicios.Negocio;
+package Servicios.Implementacion;
 
 import Dtos.Campania.DetailCampaniaResponseDTO;
 import Dtos.Campania.ListCampaniaResponseDTO;
@@ -6,18 +6,15 @@ import Dtos.Usuario.PageResponse;
 import Modelo.Campania;
 import Modelo.Jornada;
 import Persistencia.CampaniaDao;
-import Persistencia.CampaniaDaoImp;
 
+import Servicios.Negocio.JornadaService;
 import Utils.mappers.CampaniaMapper;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
 import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import java.time.LocalDate;
-import java.util.List;
+
 import java.util.NoSuchElementException;
 
 @ApplicationScoped
