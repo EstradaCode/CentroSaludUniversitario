@@ -2,10 +2,7 @@ package Modelo;
 
 import Utils.Converters.*;
 import Utils.Enums.*;
-import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvBindByNames;
-import com.opencsv.bean.CsvBindByPosition;
-import com.opencsv.bean.CsvCustomBindByName;
+import com.opencsv.bean.*;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -13,62 +10,73 @@ import java.util.*;
 
 @Entity
 public class Encuesta {
+    @CsvBindByPosition(position = 0)
+    private String uuidApi;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CsvBindByName(column = "lat_1_Presione_actualiza")
+    @CsvBindByPosition(position = 4)
     private transient double latitud;
 
-    @CsvBindByName(column = "long_1_Presione_actualiza")
+    @CsvBindByPosition(position = 5)
     private transient double longitud;
 
     @Embedded
     private GeoPoint coordenadas;
-    @CsvCustomBindByName(column = "created_at", converter = IsoDateConverter.class)
+    @CsvCustomBindByPosition(position = 1, converter = IsoDateConverter.class)
     private Date fechaCreacion;
 
     @Enumerated(EnumType.STRING)
-    @CsvCustomBindByName(column ="37_25_Con_qu_materia", converter = TipoViviendaConverter.class)
+    @CsvCustomBindByPosition(position = 14, converter = TipoViviendaConverter.class)
     private TipoVivienda tipoVivienda;
-    @CsvCustomBindByName(column = "38_26_Tiene_acceso_a",converter = YesOrNoConverter.class)
+    @CsvCustomBindByPosition(position = 15,converter = YesOrNoConverter.class)
     private Boolean accesoAgua;
-    @CsvCustomBindByName(column = "40_28_El_agua_que_se",converter = YesOrNoConverter.class)
+    @CsvCustomBindByPosition(position = 17,converter = YesOrNoConverter.class)
     private Boolean aguaPotable;
-
-    @Enumerated(EnumType.STRING)
-    @CsvCustomBindByName(column = "41_29_Tiene_conexin_e", converter = TipoConexionElectricaConverter.class)
-    private TipoConexionElectrica conexionElectrica;
 
     @ElementCollection(targetClass = TipoCalefaccion.class)
     @Enumerated(EnumType.STRING)
-    @CsvCustomBindByName(column = "44_32_Cmo_es_la_cale", converter = CalefaccionConverter.class)
+    @CsvCustomBindByPosition(position = 21, converter = CalefaccionConverter.class)
     private Set<TipoCalefaccion> calefaccion;
-    @CsvCustomBindByName(column = "47_35_Cuntos_ambient", converter = CantidadHabitacionesConverter.class)
-    private CantidadHabitaciones cantidadHabitaciones;
-    @CsvCustomBindByName(column = "50_38_En_esta_vivien", converter = YesOrNoConverter.class)
-    private Boolean asistenciaAlimentaria;
 
     @Enumerated(EnumType.STRING)
+    @CsvCustomBindByPosition(position = 22, converter = TipoConexionElectricaConverter.class)
+    private TipoConexionElectrica conexionElectrica;
+
+
+    @CsvCustomBindByPosition(position = 24, converter = CantidadHabitacionesConverter.class)
+    private CantidadHabitaciones cantidadHabitaciones;
+
+    @Enumerated(EnumType.STRING)
+    @CsvCustomBindByPosition(position = 26, converter = NivelIngresosConverter.class)
     private NivelIngresos ingresos;
+
+    @CsvCustomBindByPosition(position = 27, converter = YesOrNoConverter.class)
+    private Boolean asistenciaAlimentaria;
+
+
     @ElementCollection(targetClass = AtencionSalud.class)
     @Enumerated(EnumType.STRING)
+    @CsvCustomBindByPosition(position = 29, converter = AtencionSaludConverter.class)
     private Set<AtencionSalud> atencionSalud;
-    @ElementCollection(targetClass = MetodoAnticonceptivo.class)
-    @Enumerated(EnumType.STRING)
-    private Set<MetodoAnticonceptivo> anticonceptivos;
+
     @ElementCollection(targetClass = AccesoMedicacion.class)
     @Enumerated(EnumType.STRING)
-    @CsvCustomBindByName(column = "acceso_medicacion", converter = AccesoMedicacionConverter.class)
+    @CsvCustomBindByPosition(position = 60, converter = AccesoMedicacionConverter.class)
     private Set<AccesoMedicacion> accesoMedicacion;
+
+    @ElementCollection(targetClass = MetodoAnticonceptivo.class)
+    @Enumerated(EnumType.STRING)
+    @CsvCustomBindByPosition(position = 65, converter = MetodoAnticonceptivoConverter.class)
+    private Set<MetodoAnticonceptivo> anticonceptivos;
+
     @OneToMany(mappedBy = "encuesta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EncuestaPersona> personas = new ArrayList<>();
 
     @ManyToOne
     private Jornada jornada;
-    @CsvBindByPosition(position = 0)
-    @CsvCustomBindByName(column = "ec5_uuid", converter = OwnerUuidConverter.class)
-    private String uuidApi;
+
 
     public Encuesta() {}
 

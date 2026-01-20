@@ -21,6 +21,7 @@ public class ExtractorEncuesta implements Extractor<List<Encuesta>> {
         try (Reader reader = new FileReader(path)) {
             CsvToBean<Encuesta> csvToBean = new CsvToBeanBuilder<Encuesta>(reader)
                     .withType(Encuesta.class)
+                    .withSkipLines(1)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
 

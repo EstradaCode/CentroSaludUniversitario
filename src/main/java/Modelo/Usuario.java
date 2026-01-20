@@ -43,11 +43,6 @@ public class Usuario extends Persona {
     @Schema(description = "Matrícula profesional si aplica (solo para usuarios con rol SALUD)", example = "32165")
     private Long matricula;
 
-    @Transient
-    @JsonbTransient
-    @Schema(hidden = true) // No lo mostramos en la documentación Swagger
-    private List<Filtro> filtros;
-
     public Usuario() {}
 
     public Usuario(String nombre, String apellido, long dni, long telefono, String username, String password, String email, String rolEnString, Long matricula) {
@@ -57,7 +52,6 @@ public class Usuario extends Persona {
         this.email = email;
         this.enabled = false;
         this.matricula = matricula;
-        this.filtros = filtros;
         switch (rolEnString) {
             case "ADMIN" -> this.rol = Roles.ADMIN;
             case "SALUD" -> this.rol = Roles.SALUD;
@@ -85,10 +79,6 @@ public class Usuario extends Persona {
 
     public Long getMatricula() { return matricula; }
     public void setMatricula(Long matricula) { this.matricula = matricula; }
-
-    public List<Filtro> getFiltros() { return filtros; }
-    public void setFiltros(List<Filtro> filtros) { this.filtros = filtros; }
-
     public Boolean getApprobed() { return enabled; }
 
     @Override

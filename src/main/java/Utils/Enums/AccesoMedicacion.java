@@ -10,6 +10,7 @@ public enum AccesoMedicacion {
     COMPRA("Lo compra"),
     NS_NC("No sabe o no contesta");
 
+
     private final String descripcion;
 
     AccesoMedicacion(String descripcion) {

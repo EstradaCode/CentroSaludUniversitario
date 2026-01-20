@@ -33,4 +33,11 @@ public class GeoPoint {
     public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
+    @Override
+    public String toString() {
+        return "GeoPoint{" +
+                "latitud=" + latitud +
+                ", longitud=" + longitud +
+                '}';
+    }
 }

@@ -17,12 +17,23 @@ public class Campania {
     private List<Barrio> zona;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    @OneToMany
-    private List<Encuestador>  encuestadores;
-    @OneToMany(mappedBy = "campania", cascade = CascadeType.ALL)
-    private List<Jornada> jornadas;
     @ManyToOne
-    @JoinColumn(name = "organizacionSocial_id")
+    @JoinColumn(name = "barrio_id")
+    private Barrio barrio;
+
+    @OneToMany(mappedBy = "campania", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Jornada> jornadas;
+
+    @ManyToMany
+    @JoinTable(
+            name = "campania_encuestador",
+            joinColumns = @JoinColumn(name = "campania_id"),
+            inverseJoinColumns = @JoinColumn(name = "encuestador_id")
+    )
+    private List<Encuestador> encuestadores;
+
+    @ManyToOne
+    @JoinColumn(name = "organizacion_social_id")
     private OrganizacionSocial organizacionSocial;
 
     public Campania() {
